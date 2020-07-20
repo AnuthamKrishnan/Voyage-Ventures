@@ -15,10 +15,12 @@ All of us contributed equally in the ER diagram and normalization process. Altho
 
 Backend work(Sql database, maintaining data and relevant functions, procedures and queries) was mainly handled by Aditya and Sankalp.
 
-The project was a fun and overwhelming experience. We learnt about how things get complex when scaled up. Planning in advanced using E-R diagram is essential.
+The project was a fun and overwhelming experience. We learnt more about databases and the processes involved in making large scale systems. We learnt about how things get complex when scaled up. Planning in advanced using E-R diagram is essential.
+
 ## Technologies used
 
 **Backend**: Oracle SQL 11g
+
 **Frontend**: C# 
 
 ## Features
