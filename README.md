@@ -39,19 +39,29 @@ Fun fact : More than 20 tables were involved in our project. We didn't think it 
 ## Highlights
 
 ### Login page
+
+
 ![Frontend/images/Login.jpg](Frontend/images/Login.jpg)
 
 ### Signup page
+
+
 ![Frontend/images/Signup.jpg](Frontend/images/Signup.jpg)
 
 ### Hotel booking functionality
+
+
 ![Frontend/images/Hotel.jpg](Frontend/images/Hotel.jpg)
 
 
 ### Flight booking system
+
+
 ![Frontend/images/Hotel.jpg](Frontend/images/Flight.png)
 
 ### Attractions
+
+
 ![Frontend/images/Attractions.jpg](Frontend/images/Attractions.jpg)
 
 ## Todo
