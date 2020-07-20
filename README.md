@@ -66,8 +66,12 @@ Fun fact : More than 20 tables were involved in our project. We didn't think it 
 
 ## Todo
 
-[] Add small descriptions in the highlights sections for each image 
-[] Upload your codes in the repository everybody 
-[] Add info in ER diagram section if you feel 
-[] Resolve all these todos and remove them from here LOLOLOL
-[] Make README.md in frontend and backend
+-[] Add small descriptions in the highlights sections for each image 
+
+-[] Upload your codes in the repository everybody 
+
+-[] Add info in ER diagram section if you feel 
+
+-[] Resolve all these todos and remove them from here LOLOLOL
+
+-[] Make README.md in frontend and backend
