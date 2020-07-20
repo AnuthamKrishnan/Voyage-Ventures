@@ -1,4 +1,7 @@
 # Voyage-Ventures
+![Main.jpg](Main.jpg)
+
+
 This is our DataBase Management (DBS) project. We made this project for the final evaluation of the DBS lab held in the 4th semester.
 It is a full fledged travel management system designed to make the whole process of planning and booking their dream holiday easier. 
 
