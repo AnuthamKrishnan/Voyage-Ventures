@@ -1,0 +1,51 @@
+---select the flights
+
+select flight#,name,takeoff_time,landing_date,landing_time,departure_airport,arrival_airport,
+check_in_luggage,hand_luggage 
+from flight1 natural join airline1 where departure_airport='BOM' and arrival_airport='ZRH' and 
+takeoff_date=TO_DATE('10/06/2020','DD/MM/YYYY');
+
+---select the eateries at a particular place
+
+select name,cuisine,valet,capacity_avail,cost_per_person,open_timing,close_timing 
+from eatery1,eatery_timings1 where
+eatery1.eatery#=eatery_timings1.eatery# and eatery1.address# in
+(select address# from address1 where city='Tokyo');
+
+
+
+
+---trigger
+
+create or replace trigger trig1
+after insert on flight_booking1
+for each row
+begin
+if inserting then
+delete from available_seats1 where flight#=:new.flight# and seat_no=:new.seat_no;
+end if;
+end;
+/
+
+--to autoincrement a primary key
+
+create sequence travel_sequence;  //create a sequence
+
+CREATE OR REPLACE TRIGGER on_insert
+  BEFORE INSERT ON travel_booking1
+  FOR EACH ROW
+BEGIN
+  SELECT travel_sequence.nextval
+  INTO :new.travel#
+  FROM dual;
+END;
+/
+
+
+---example to check trigger
+insert into travel_booking1 values(1,1,'Switzerland','Zurich',100000);
+insert into flight_booking1 values(1,2,3,'nonveg');
+
+--example to check autoincrement
+insert into travel_booking1(user#,country,city,total_price) values(5,'Japan','Tokyo',1000000);
+

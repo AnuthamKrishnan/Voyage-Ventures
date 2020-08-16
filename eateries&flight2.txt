@@ -1,0 +1,2298 @@
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+---creating tables related to eateries and flights..
+
+Note - 1) First create user table as user# is used as a foreign key.  (imp)
+       2) then create address table because those addresses are also used. (imp)
+
+
+create table travel_booking1(
+travel# int,
+user# int,
+country varchar(20),
+city varchar(20),
+total_price int,
+primary key(travel#),
+foreign key(user#) references user1
+);                        
+
+create table eatery1(
+eatery# int,
+address# int,
+name varchar(100),
+cuisine varchar(50),
+valet varchar(5),
+capacity_avail int,
+cost_per_person int,
+primary key(eatery#),
+foreign key(address#) references address1 
+);                          
+
+create table eatery_timings1(
+eatery# int,
+open_timing varchar(20),
+close_timing varchar(20),
+foreign key(eatery#) references eatery1
+);
+
+create table eatery_booking1(
+travel# int,
+eatery# int,
+booking_date date,
+capacity_booked int,
+foreign key(travel#) references travel_booking1,
+foreign key(eatery#) references eatery1
+);
+
+create table eatery_review1(
+eatery# int,
+user# int,
+stars int,
+line1 varchar(1000),
+line2 varchar(1000),
+summary varchar(100),
+foreign key(eatery#) references eatery1,
+foreign key(user#) references user1
+);                                             
+
+
+create table airline1(
+airline# int,
+name varchar(20),
+check_in_luggage varchar(20),
+hand_luggage varchar(20),
+primary key(airline#)
+);
+
+create table airport1(
+airport# varchar(10),
+address# int,
+primary key(airport#)
+);
+
+create table flight1(
+flight# int,
+airline# int,
+takeoff_date date,
+takeoff_time varchar(15),
+landing_date date,
+landing_time varchar(15),
+arrival_airport varchar(20),
+departure_airport varchar(20),
+price int,
+primary key(flight#),
+foreign key(airline#) references airline1,
+foreign key(arrival_airport) references airport1(airport#),
+foreign key(departure_airport) references airport1(airport#)
+);
+
+
+create table available_seats1(
+flight# int,
+seat_no int,
+foreign key(flight#) references flight1,
+primary key(flight#,seat_no)
+);
+
+create table flight_booking1(
+travel# int,
+flight# int,
+seat_no int,
+meals varchar(30),
+primary key(flight#,seat_no),
+foreign key(travel#) references travel_booking1
+);
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+--inserting values into eatery1
+
+insert into eatery1 values(1,29,'Ithaa Undersea Restaurant','SeaFood','yes',14,28000);
+insert into eatery1 values(2,30,'Murakka','SeaFood, Asian, Deli','yes',30,5000);
+insert into eatery1 values(3,31,'Symphony Lagoon','Italian, SeaFood, Asian','no',30,6000);
+insert into eatery1 values(4,32,'Palace Sichuan','Chinese','yes',30,6500);
+
+insert into eatery1 values(5,33,'Aragawa','SteakHouse','no',30,15000);
+insert into eatery1 values(6,34,'Sukiyabashi Jiro Honten','Japanese, Sushi, Asian','yes',30,12000);
+insert into eatery1 values(7,35,'Nihonryori Ryugin','Japanese','no',30,17000);
+insert into eatery1 values(8,36,'Narisawa','Contemporary, Gluten free options','yes',30,13500);
+insert into eatery1 values(9,37,'Kozue','Japanese, Asian','yes',30,10000);
+
+
+insert into eatery1 values(10,38,'Brasserie Louis','French, European','no',30,5000);
+insert into eatery1 values(11,39,'Zunfthaus Zur Waag','French, International, Swiss','no',30,4500);
+insert into eatery1 values(12,40,'Clouds Kitchen','French, European, International','no',30,10000);
+insert into eatery1 values(13,41,'Equinox','Grill, Swiss','no',30,8000);
+insert into eatery1 values(14,42,'Parkhuus','Grill, Swiss','no',30,13000);
+
+
+insert into eatery1 values(15,43,'The Cliff at Cap','Carribean, SeaFood','no',30,10000);
+insert into eatery1 values(16,44,'Boucan','Carribean, International','no',30,8000);
+insert into eatery1 values(17,45,'BigChef SteakHouse','SteakHouse','no',30,7000);
+insert into eatery1 values(18,46,'The Naked Fishermen','Carribean, Bar','no',30,7000);
+
+--inserting values into eatery_timings1
+
+insert into eatery_timings1 values(1,'11AM','10:30PM');
+insert into eatery_timings1 values(2,'8AM','11PM');
+insert into eatery_timings1 values(3,'10:30AM','3PM');
+insert into eatery_timings1 values(3,'6:30PM','12AM');
+insert into eatery_timings1 values(4,'2PM','10:30PM');
+insert into eatery_timings1 values(5,'2PM','10:30PM');
+insert into eatery_timings1 values(6,'2PM','5PM');
+insert into eatery_timings1 values(6,'7PM','11PM');
+insert into eatery_timings1 values(7,'6:30PM','12AM');
+insert into eatery_timings1 values(8,'2PM','10:30PM');
+insert into eatery_timings1 values(9,'2PM','10:30PM');
+insert into eatery_timings1 values(10,'5PM','11PM');
+insert into eatery_timings1 values(11,'10:30AM','2:30PM');
+insert into eatery_timings1 values(11,'6:30PM','11PM');
+insert into eatery_timings1 values(12,'9AM','12AM');
+insert into eatery_timings1 values(13,'8:30AM','7PM');
+insert into eatery_timings1 values(14,'12PM','9:30PM');
+insert into eatery_timings1 values(15,'6PM','11PM');
+insert into eatery_timings1 values(16,'6AM','6PM');
+insert into eatery_timings1 values(17,'6PM','12AM');
+insert into eatery_timings1 values(18,'9AM','2PM');
+insert into eatery_timings1 values(18,'5PM','10PM');
+
+--inserting values into eatery_review1
+
+insert into eatery_review1 values(1,1,5,'Absolutely unmissable. Food is incredible and it is an experience like nothing else ever.','seeing the fish and sharks swim past as you enjoy a quality meal.','Amazing undersea Restaurant');
+insert into eatery_review1 values(1,2,5,'Lovely experience with a champagne and a few canapés',' definitely recommend visiting at least to see the fish swim among you in the underwater restaurant','Champagne');
+insert into eatery_review1 values(1,3,5,'I spend more time watching all the fishes and sharks instead of my lunch...',' I believed its better to have lunch instead of dinner because of the view... excellent staff! Highly recommend!!!','Love this restaurant');
+
+insert into eatery_review1 values(2,4,5,'We largely enjoyed the Muraka during our stay at Mirihi resort',' its simply the best place to enjoy a drink or have dinner, perfect location with super nice staff!','One of the best place to enjoy a drink');
+insert into eatery_review1 values(2,1,5,'The Muraka bar and restaurant is situated on a long pier. I have dined there before and it was excellent.','A very tastefully done terrase with comfortable chairs makes you enjoy the fabulous sunsets.','So romantic');
+insert into eatery_review1 values(2,2,5,'Been to this restaurant three times now. The menu gives a range of food, but focuses on the fresh, and abundant sea food. I personally went for the Australian Angus Fillet. One of the top ten steals I have ever had.','On top of all this, there is a view directly into the reef while you eat.','Sunset, sea,heaven...');
+
+insert into eatery_review1 values(3,3,5,'We had almost all our meals there when we visited. Their signiture salad is tasty. Bryani is good too.','The service is acceptable. There is nothing to shout about ','Good');
+insert into eatery_review1 values(3,4,5,'The food was awesome, great service and comfort food.','The servers were top notch and had a pleasant manner. Overall loved the experience','Great experience');
+insert into eatery_review1 values(3,1,5,'Fish and chips at this place is excellent. The milkshakes we ordered also was very good and tasty. ','But the service is little slow','Excellent food');
+
+insert into eatery_review1 values(4,2,5,'Its really best chinese restaurant in maldives. I really love the food',' Its in the heart of capital city of Maldives','Great dinner');
+insert into eatery_review1 values(4,3,5,'Probably the only Chinese restaurant in Male which stays true to the origin of the dishes and do not try to change it to fit to the local taste buds. ','Good place for Chinese food lovers evidenced by the large number of Chinese guests.','Best Chinese restaurant in Male');
+insert into eatery_review1 values(4,4,5,'Everything was perfect... From the ambience to all over the palace it was stunning',' this is the one and only place that we can get the real chinese food...the original taste of china. Staffs are so attentive and helpful.','Perfect place to have Chinese');
+
+insert into eatery_review1 values(5,1,5,'Ok. I am from Texas and we are very proud of our beef and steak culture. So part of me is pained writing this, but there is absolutely no comparison to any steak experience I have ever had.','Of course the wagyu beef is of the highest quality, but the chef was truly an artist.','Best steak of my life');
+insert into eatery_review1 values(5,2,5,'this little restaurant serves in my opinion some of the best beef you''ll ever taste in the world.','The meal is definitely all about the steak, cut and cooked by the specialist chef who has made cooking all cuts of beef his craft and passion. ','Some of the world''s best steaks');
+insert into eatery_review1 values(5,3,5,'Probably one of the best steaks I have had the privilege of eating. The smoked salmon(smoked in house) was also outstanding.','One downside amazing things don''t come cheap and this is exactly the case as it is incredibly expensive.','Excellent yet very very pricey');
+
+insert into eatery_review1 values(6,4,5,'The most amazing sushi dinner you''ll ever have, anywhere, ever. Jiro and Yoshikazu lead an amazingly well orchestrated team delivering the most amazing meal I''ve ever eaten anywhere.',' The Bonito is the best thing I''ve ever eaten','Sushi-Scrumptious-Surreal-Perfected');
+insert into eatery_review1 values(6,1,5,' Its pretty expensive, but the whole experience was amazing. ',' You will have 30 minutes to finish 19-course sushi. Chu-toro was tender and melt in your mouth. Abalone was huge and juicy. Boiled Prawn was delicious and full of flavor. ','Excellent experience');
+insert into eatery_review1 values(6,2,5,'This is by far the best sushi you will ever have in your life','It was more than worth the cost for a once in a lifetime experience.','Unbelievable Sushi');
+
+insert into eatery_review1 values(7,3,5,'This made my day. Food and service both are good.',' Abundant time was allowed among dished to appreciate the taste and design.','Really nice Food');
+insert into eatery_review1 values(7,4,5,'A great way to start the day. Or night. Your choice. Each painstakingly selected ingredient contributes to the greatness of the dish. ','Got a pretty good portion size for a relatively fair price. Should definitely check this place out with friends and family.','Absolutely amazing!!');
+insert into eatery_review1 values(7,1,5,'The food is great. Really subtle and delicate tastes in a pure Japanese style.',' The course is nicely sized and I highly recommend the Tea Tasting Course to accompany the dishes, it''s more original than a classic wine one.','Great place to have japanese!');
+
+insert into eatery_review1 values(8,2,5,'A truly three star restaurant, all are perfect, food, service and ambiance, definitely worth trying.',' A minor suggestion of improvement: coffee could be better.','Top notch restaurant');
+insert into eatery_review1 values(8,3,5,'The food is a total success as they use super high quality products. The service was excellent also! ','Special thanks to Suzuki Tomi san for his dedication and amazing service provided! Every restaurant needs a person like him in the team! We truly enjoyed!','Excellent service and food');
+insert into eatery_review1 values(8,4,5,'Narisawa is a very creative restaurant and having lunch there is more an experience or adventure the a good meal.','Steep prices but worth it!','Exquisite and special experience');
+
+insert into eatery_review1 values(9,1,5,'It was exquisite and very refined from start till the last course.',' This Kaiseki meal was the best we ever had','Best ever Kaiseki meal we had in Japan');
+insert into eatery_review1 values(9,2,5,'Fantastic location. It is reccomended to book a window table. Great dinner experience.','Top quality and service. It is expensive but they offer menù at special price. Amazing food presentation.','Dinner and View');
+insert into eatery_review1 values(9,3,5,'Very nice restaurant with an amazing view in Tokyo. Rafinated seafood','A culinary discovery of Japanese food. But very expensive!!','Very nice restaurant with a view');
+
+insert into eatery_review1 values(10,4,5,'If you want a real filing to be in a real brassiere Parisienne, this is the place.','Food is very French, escargots, huitres, salad verte, omelette, terrine de foie. Everything was good. Service good too, like a family owners. ','French');
+insert into eatery_review1 values(10,1,5,'Great food, great service! Multiple languages and very attentional crew.','Plates are well served and fair priced.','Great!');
+insert into eatery_review1 values(10,2,5,'The French desserts were excellent: chocolate mousse and chocolate cake. ','Nice staff and good music for a wonderful evening.','Lovely evening, nice atmosphere');
+
+insert into eatery_review1 values(11,3,5,'They had an excellent wine selection and the food was delicious.','Very nice, subtle atmosphere. Quite pricey','Amazing! The service was outstanding');
+insert into eatery_review1 values(11,4,5,'Such an amazing place with an excellent service and great food. Simply love it - WOW!','The “Zürcher Geschnetzeltes” is melting in your moth, just as the chocolate mousse at the end. Nice wine selection, too.','Excellent');
+insert into eatery_review1 values(11,1,5,'The food service and ambience are excellent. In the summer you can eat outside in the square and the ambience is fun.','The wine list is very good. The food is mainly Swiss. It''s pricey though. Otherwise I fully recommend it.','Excellent food and ambience');
+
+insert into eatery_review1 values(12,2,5,'Very nice table, entertaining waiter and the fresh oysters made for great experience.',' If it not be for the outrageous prices, it would get 5 points.','Very nice table, entertaining');
+insert into eatery_review1 values(12,3,5,'An enjoyable dinner with a varied menu. ','The view is really only relevant to those right by a window, as reflection from light, and the absence of any great nighttime views rather defeats the panoramic view claim!','Enjoyable dinner');
+insert into eatery_review1 values(12,4,5,'The location is just perfect. I thoroughly enjoyed the flavors and portion sizes. ','At night the view over the city is amazing and made me think about the view from the Shard in London. Just beautiful and easily puts you in a state of wanting to travel','Good food and view.');
+
+insert into eatery_review1 values(13,1,5,'We stayed here and had the breakfast buffet and it was everything that a person would want. ','Plenty of different foods and a large variety of things to drink.','Great place for breakfast.');
+insert into eatery_review1 values(13,2,5,'Accurate service and good range (without being too much) of food selection (including wine list). ',' Do not miss to ask for the daily specials...they always have great suggestions','Nice food');
+insert into eatery_review1 values(13,3,5,'Top quality for starters and main dishes. All came as ordered and presented well. Wine selection is good too.',' Service is efficient. Good place for business meals, at high prices though.','High quality dinner');
+
+insert into eatery_review1 values(14,4,5,'we enjoyed and anvied every last taste and bit we took.','It may be an expensive restaurant but it is absolutely worth every last','It was an absolute scintillating experience');
+insert into eatery_review1 values(14,1,5,'Exquisite genuine Swiss cuisine, it is excellent hospitality and welcoming staff, There wasn’'t a dish I did not enjoyed',' if you want genuine Swiss cuisine fine dining with great service Parkhuus is the one and only place to go .','Just brilliant and elegant hotel');
+insert into eatery_review1 values(14,2,5,'Excellent pike fish, excellent organic chicken','amazing SWISS beef loin followed by an excellent Swiss white wine recommended by the sommelier.','Finest Swiss cuisine and finest Swiss wine.');
+
+insert into eatery_review1 values(15,3,5,'I only wish we’'d gone closer to sunset as I would have loved to see the view from the restaurant over the water. The drinks were really well made','food was truly delicious. Not cheap but I wouldn’'t say very expensive ','Sophisticated meal in a beautiful setting');
+insert into eatery_review1 values(15,4,5,'The perfect spot to dine in Cap Estate. The view from The Cliff at Cap Maison is breathtaking.',' An extraordinary accompaniment to a wonderful menu. Truly a special place.','Elegance with View');
+insert into eatery_review1 values(15,1,5,'We just celebrated my mums birthday here. The food was exceptional.','The service was first class and the views were sublime. Perfect evening. Thank you!','Perfect meal stunning views');
+
+insert into eatery_review1 values(16,2,5,'The setting and view must be the best on the island, absolutely stunning. ',' The dipping entrees are delicious - melted chocolate, chocolate butter and herb oil. Food is delicious','Everything''s chocolate');
+insert into eatery_review1 values(16,3,5,'Boucan is set up high in the hills above Soufriere, with open walls and a dark wood interior. ','The food was very well presented and the flavours subtly balanced.','Delicious food with subtle use of cocoa beans');
+insert into eatery_review1 values(16,4,5,'The view from the restaurant is great in daytime','The highlight was an absolutely superb chocalte marquise dessert - four puddings in one. Great salads.','Lovely lunch spot');
+
+insert into eatery_review1 values(17,1,5,'Excellent meal at Big Chef. The food was fantastic and the ambience really wonderful with the piano player.','Highly recommended. ','Excellent meal');
+insert into eatery_review1 values(17,2,5,'I can say one of the best steaks in the caribbean and I am glad we at there. ','They let us eat at the bar and a fabulous place to go 100%','Fabulous food');
+insert into eatery_review1 values(17,3,5,'We booked a table for five and were seated next to the piano. The pianist/singer was superb and even gave us a personal singalong encore at the end of the night.','From entering the restaurant,the service was superb, and we enjoyed ourselves','Best steak ever');
+
+insert into eatery_review1 values(18,4,5,'Great little hideaway for lunch or drinks. Fish and chips was great.','You can also swim ashore from your boat and grab a drink on the lounge cots. Must see spot when visiting St Lucia','Great little hideaway');
+insert into eatery_review1 values(18,1,5,'This is a hidden gem. Went twice during our vacation for lunch and dinner. Restaurant is right on the beach in a beautiful cove. ','Food is incredible, especially the caramelized Caribbean shrimp. Bartender made a drink off menu on request. Service was great ','Amazing food, Amazing location');
+insert into eatery_review1 values(18,2,5,'Tremendous fish restaurant right on the beach. Only downside is the 90 steps down to the secluded beach but its well worth the descent.','Shrimps amazing, fish of the day amazing. Menu quite short but there’'s enough to please meaties and fish lovers.','Hidden Gem');
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+--inserting values in airline1
+
+insert into airline1 values(1,'Turkish airlines','30 kgs','7 kgs');
+insert into airline1 values(2,'Qatar airways','30 kgs','7 kgs');
+insert into airline1 values(3,'Etihad airways','30 kgs','7 kgs');
+insert into airline1 values(4,'British airways','23 kgs','7 kgs');
+insert into airline1 values(5,'Vistara','30 kgs','7 kgs');
+insert into airline1 values(6,'Lufthansa','46 kgs','7 kgs');
+insert into airline1 values(7,'American airlines','46 kgs','7 kgs');
+insert into airline1 values(8,'Swiss','23 kgs','7 kgs');
+insert into airline1 values(9,'IndiGo','20 kgs','7 kgs');
+insert into airline1 values(10,'Go Air','20 kgs','7 kgs');
+
+--inserting values in airport1
+
+insert into airport1 values('BOM',21);
+insert into airport1 values('DEL',22);
+insert into airport1 values('CCU',23);
+insert into airport1 values('MAA',24);
+insert into airport1 values('ZRH',25);
+insert into airport1 values('HND',26);
+insert into airport1 values('UVF',27);
+insert into airport1 values('MLE',28);
+
+--inserting values in flight1
+
+insert into flight1 values(1,8,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'06:30','ZRH','BOM',50500);
+insert into flight1 values(2,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:30',TO_DATE('10/06/2020','DD/MM/YYYY'),'13:45','ZRH','BOM',46354);
+insert into flight1 values(3,2,TO_DATE('10/06/2020','DD/MM/YYYY'),'04:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'14:30','ZRH','BOM',57235);
+insert into flight1 values(4,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'08:40','ZRH','BOM',53500);
+insert into flight1 values(5,3,TO_DATE('10/06/2020','DD/MM/YYYY'),'04:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'14:00','ZRH','BOM',43589);
+insert into flight1 values(6,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'08:35',TO_DATE('10/06/2020','DD/MM/YYYY'),'15:10','MLE','BOM',7759);
+insert into flight1 values(7,10,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:30',TO_DATE('10/06/2020','DD/MM/YYYY'),'11:55','MLE','BOM',8202);
+insert into flight1 values(8,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'07:20',TO_DATE('10/06/2020','DD/MM/YYYY'),'09:40','MLE','BOM',12500);
+insert into flight1 values(9,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'02:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'06:35','HND','BOM',77545);
+insert into flight1 values(10,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'19:40',TO_DATE('11/06/2020','DD/MM/YYYY'),'07:50','HND','BOM',85678);
+insert into flight1 values(11,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:45',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:20','HND','BOM',70065);
+insert into flight1 values(12,2,TO_DATE('10/06/2020','DD/MM/YYYY'),'11:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'05:55','HND','BOM',66500);
+insert into flight1 values(13,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:40','UVF','BOM',57335);
+insert into flight1 values(14,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'13:20',TO_DATE('11/06/2020','DD/MM/YYYY'),'19:05','UVF','BOM',49500);
+insert into flight1 values(15,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'02:50',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:55','UVF','BOM',63475);
+insert into flight1 values(16,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:30',TO_DATE('11/06/2020','DD/MM/YYYY'),'23:00','UVF','BOM',51525);
+
+insert into flight1 values(17,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('10/06/2020','DD/MM/YYYY'),'18:00','ZRH','DEL',28935);
+insert into flight1 values(18,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('10/06/2020','DD/MM/YYYY'),'17:45','ZRH','DEL',31545);
+insert into flight1 values(19,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:05',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:45','ZRH','DEL',44825);
+insert into flight1 values(20,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'11:55','ZRH','DEL',55545);
+insert into flight1 values(21,10,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'09:40','MLE','DEL',9306);
+insert into flight1 values(22,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:55','MLE','DEL',18750);
+insert into flight1 values(23,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'15:30',TO_DATE('11/06/2020','DD/MM/YYYY'),'07:50','HND','DEL',57187);
+insert into flight1 values(24,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'10:55','HND','DEL',174741);
+insert into flight1 values(25,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'02:30','HND','DEL',225575);
+insert into flight1 values(26,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('11/06/2020','DD/MM/YYYY'),'01:30','HND','DEL',326879);
+insert into flight1 values(27,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:50',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:41','UVF','DEL',47060);
+insert into flight1 values(28,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'02:05',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:41','UVF','DEL',78056);
+insert into flight1 values(29,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'11:30',TO_DATE('11/06/2020','DD/MM/YYYY'),'14:05','UVF','DEL',56065);
+insert into flight1 values(30,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'14:00',TO_DATE('11/06/2020','DD/MM/YYYY'),'19:45','UVF','DEL',59645);
+
+insert into flight1 values(31,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'13:45','ZRH','MAA',44575);
+insert into flight1 values(32,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'18:00','ZRH','MAA',28045);
+insert into flight1 values(33,8,TO_DATE('10/06/2020','DD/MM/YYYY'),'04:40',TO_DATE('10/06/2020','DD/MM/YYYY'),'14:00','ZRH','MAA',72065);
+insert into flight1 values(34,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:50',TO_DATE('10/06/2020','DD/MM/YYYY'),'19:05','ZRH','MAA',41540);
+insert into flight1 values(35,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'22:15',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:10','MLE','MAA',8535);
+insert into flight1 values(36,10,TO_DATE('10/06/2020','DD/MM/YYYY'),'14:15',TO_DATE('11/06/2020','DD/MM/YYYY'),'09:40','MLE','MAA',10095);
+insert into flight1 values(37,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:10',TO_DATE('11/06/2020','DD/MM/YYYY'),'11:55','MLE','MAA',49500);
+insert into flight1 values(38,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'05:55','HND','MAA',42886);
+insert into flight1 values(39,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'08:40',TO_DATE('11/06/2020','DD/MM/YYYY'),'05:55','HND','MAA',48950);
+insert into flight1 values(40,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'17:25',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:50','HND','MAA',77595);
+insert into flight1 values(41,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'19:25','HND','MAA',41540);
+insert into flight1 values(42,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'12:00',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:30','UVF','MAA',62500);
+insert into flight1 values(43,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'14:00','UVF','MAA',67850);
+
+
+insert into flight1 values(44,8,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'06:30','BOM','ZRH',50500);
+insert into flight1 values(45,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:30',TO_DATE('10/06/2020','DD/MM/YYYY'),'13:45','BOM','ZRH',46354);
+insert into flight1 values(46,2,TO_DATE('10/06/2020','DD/MM/YYYY'),'04:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'14:30','BOM','ZRH',57235);
+insert into flight1 values(47,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'08:40','BOM','ZRH',53500);
+insert into flight1 values(48,3,TO_DATE('10/06/2020','DD/MM/YYYY'),'04:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'14:00','BOM','ZRH',43589);
+insert into flight1 values(49,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('10/06/2020','DD/MM/YYYY'),'18:00','DEL','ZRH',28935);
+insert into flight1 values(50,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('10/06/2020','DD/MM/YYYY'),'17:45','DEL','ZRH',31545);
+insert into flight1 values(51,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:05',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:45','DEL','ZRH',44825);
+insert into flight1 values(52,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'11:55','DEL','ZRH',55545);
+insert into flight1 values(53,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'13:45','MAA','ZRH',44575);
+insert into flight1 values(54,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'18:00','MAA','ZRH',28045);
+insert into flight1 values(55,8,TO_DATE('10/06/2020','DD/MM/YYYY'),'04:40',TO_DATE('10/06/2020','DD/MM/YYYY'),'14:00','MAA','ZRH',72065);
+insert into flight1 values(56,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:50',TO_DATE('10/06/2020','DD/MM/YYYY'),'19:05','MAA','ZRH',41540);
+
+
+insert into flight1 values(57,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'08:35',TO_DATE('10/06/2020','DD/MM/YYYY'),'15:10','BOM','MLE',7759);
+insert into flight1 values(58,10,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:30',TO_DATE('10/06/2020','DD/MM/YYYY'),'11:55','BOM','MLE',8202);
+insert into flight1 values(59,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'07:20',TO_DATE('10/06/2020','DD/MM/YYYY'),'09:40','BOM','MLE',12500);
+insert into flight1 values(60,10,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'09:40','DEL','MLE',9306);
+insert into flight1 values(61,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:55','DEL','MLE',18750);
+insert into flight1 values(62,9,TO_DATE('10/06/2020','DD/MM/YYYY'),'22:15',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:10','MAA','MLE',8535);
+insert into flight1 values(63,10,TO_DATE('10/06/2020','DD/MM/YYYY'),'14:15',TO_DATE('11/06/2020','DD/MM/YYYY'),'09:40','MAA','MLE',10095);
+insert into flight1 values(64,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:10',TO_DATE('11/06/2020','DD/MM/YYYY'),'11:55','MAA','MLE',49500);
+
+insert into flight1 values(65,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'02:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'06:35','BOM','HND',77545);
+insert into flight1 values(66,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'19:40',TO_DATE('11/06/2020','DD/MM/YYYY'),'07:50','BOM','HND',85678);
+insert into flight1 values(67,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:45',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:20','BOM','HND',70065);
+insert into flight1 values(68,2,TO_DATE('10/06/2020','DD/MM/YYYY'),'11:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'05:55','BOM','HND',66500);
+insert into flight1 values(69,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'15:30',TO_DATE('11/06/2020','DD/MM/YYYY'),'07:50','DEL','HND',57187);
+insert into flight1 values(70,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'10:55','DEL','HND',174741);
+insert into flight1 values(71,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'00:55',TO_DATE('11/06/2020','DD/MM/YYYY'),'02:30','DEL','HND',225575);
+insert into flight1 values(72,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:25',TO_DATE('11/06/2020','DD/MM/YYYY'),'01:30','DEL','HND',326879);
+insert into flight1 values(73,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'06:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'05:55','MAA','HND',42886);
+insert into flight1 values(74,5,TO_DATE('10/06/2020','DD/MM/YYYY'),'08:40',TO_DATE('11/06/2020','DD/MM/YYYY'),'05:55','MAA','HND',48950);
+insert into flight1 values(75,6,TO_DATE('10/06/2020','DD/MM/YYYY'),'17:25',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:50','MAA','HND',77595);
+insert into flight1 values(76,1,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:10',TO_DATE('10/06/2020','DD/MM/YYYY'),'19:25','MAA','HND',41540);
+
+insert into flight1 values(77,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:55',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:40','BOM','UVF',57335);
+insert into flight1 values(78,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'13:20',TO_DATE('11/06/2020','DD/MM/YYYY'),'19:05','BOM','UVF',49500);
+insert into flight1 values(79,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'02:50',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:55','BOM','UVF',63475);
+insert into flight1 values(80,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'20:30',TO_DATE('11/06/2020','DD/MM/YYYY'),'23:00','BOM','UVF',51525);
+insert into flight1 values(81,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:50',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:41','DEL','UVF',47060);
+insert into flight1 values(82,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'02:05',TO_DATE('10/06/2020','DD/MM/YYYY'),'23:41','DEL','UVF',78056);
+insert into flight1 values(83,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'11:30',TO_DATE('11/06/2020','DD/MM/YYYY'),'14:05','DEL','UVF',56065);
+insert into flight1 values(84,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'14:00',TO_DATE('11/06/2020','DD/MM/YYYY'),'19:45','DEL','UVF',59645);
+insert into flight1 values(85,7,TO_DATE('10/06/2020','DD/MM/YYYY'),'12:00',TO_DATE('11/06/2020','DD/MM/YYYY'),'15:30','MAA','UVF',62500);
+insert into flight1 values(86,4,TO_DATE('10/06/2020','DD/MM/YYYY'),'01:50',TO_DATE('11/06/2020','DD/MM/YYYY'),'14:00','MAA','UVF',67850);
+
+
+--inserting values in available_seats1
+
+insert into available_seats1 values(1,1);
+insert into available_seats1 values(1,2);
+insert into available_seats1 values(1,3);
+insert into available_seats1 values(1,4);
+insert into available_seats1 values(1,5);
+insert into available_seats1 values(1,6);
+insert into available_seats1 values(1,7);
+insert into available_seats1 values(1,8);
+insert into available_seats1 values(1,9);
+insert into available_seats1 values(1,10);
+insert into available_seats1 values(1,11);
+insert into available_seats1 values(1,12);
+insert into available_seats1 values(1,13);
+insert into available_seats1 values(1,14);
+insert into available_seats1 values(1,15);
+insert into available_seats1 values(1,16);
+insert into available_seats1 values(1,17);
+insert into available_seats1 values(1,18);
+insert into available_seats1 values(1,19);
+insert into available_seats1 values(1,20);
+insert into available_seats1 values(1,21);
+
+insert into available_seats1 values(2,1);
+insert into available_seats1 values(2,2);
+insert into available_seats1 values(2,3);
+insert into available_seats1 values(2,4);
+insert into available_seats1 values(2,5);
+insert into available_seats1 values(2,6);
+insert into available_seats1 values(2,7);
+insert into available_seats1 values(2,8);
+insert into available_seats1 values(2,9);
+insert into available_seats1 values(2,10);
+insert into available_seats1 values(2,11);
+insert into available_seats1 values(2,12);
+insert into available_seats1 values(2,13);
+insert into available_seats1 values(2,14);
+insert into available_seats1 values(2,15);
+insert into available_seats1 values(2,16);
+insert into available_seats1 values(2,17);
+insert into available_seats1 values(2,18);
+insert into available_seats1 values(2,19);
+insert into available_seats1 values(2,20);
+insert into available_seats1 values(2,21);
+
+insert into available_seats1 values(3,1);
+insert into available_seats1 values(3,2);
+insert into available_seats1 values(3,3);
+insert into available_seats1 values(3,4);
+insert into available_seats1 values(3,5);
+insert into available_seats1 values(3,6);
+insert into available_seats1 values(3,7);
+insert into available_seats1 values(3,8);
+insert into available_seats1 values(3,9);
+insert into available_seats1 values(3,10);
+insert into available_seats1 values(3,11);
+insert into available_seats1 values(3,12);
+insert into available_seats1 values(3,13);
+insert into available_seats1 values(3,14);
+insert into available_seats1 values(3,15);
+insert into available_seats1 values(3,16);
+insert into available_seats1 values(3,17);
+insert into available_seats1 values(3,18);
+insert into available_seats1 values(3,19);
+insert into available_seats1 values(3,20);
+insert into available_seats1 values(3,21);
+
+insert into available_seats1 values(4,1);
+insert into available_seats1 values(4,2);
+insert into available_seats1 values(4,3);
+insert into available_seats1 values(4,4);
+insert into available_seats1 values(4,5);
+insert into available_seats1 values(4,6);
+insert into available_seats1 values(4,7);
+insert into available_seats1 values(4,8);
+insert into available_seats1 values(4,9);
+insert into available_seats1 values(4,10);
+insert into available_seats1 values(4,11);
+insert into available_seats1 values(4,12);
+insert into available_seats1 values(4,13);
+insert into available_seats1 values(4,14);
+insert into available_seats1 values(4,15);
+insert into available_seats1 values(4,16);
+insert into available_seats1 values(4,17);
+insert into available_seats1 values(4,18);
+insert into available_seats1 values(4,19);
+insert into available_seats1 values(4,20);
+insert into available_seats1 values(4,21);
+
+
+insert into available_seats1 values(5,1);
+insert into available_seats1 values(5,2);
+insert into available_seats1 values(5,3);
+insert into available_seats1 values(5,4);
+insert into available_seats1 values(5,5);
+insert into available_seats1 values(5,6);
+insert into available_seats1 values(5,7);
+insert into available_seats1 values(5,8);
+insert into available_seats1 values(5,9);
+insert into available_seats1 values(5,10);
+insert into available_seats1 values(5,11);
+insert into available_seats1 values(5,12);
+insert into available_seats1 values(5,13);
+insert into available_seats1 values(5,14);
+insert into available_seats1 values(5,15);
+insert into available_seats1 values(5,16);
+insert into available_seats1 values(5,17);
+insert into available_seats1 values(5,18);
+insert into available_seats1 values(5,19);
+insert into available_seats1 values(5,20);
+insert into available_seats1 values(5,21);
+
+insert into available_seats1 values(6,1);
+insert into available_seats1 values(6,2);
+insert into available_seats1 values(6,3);
+insert into available_seats1 values(6,4);
+insert into available_seats1 values(6,5);
+insert into available_seats1 values(6,6);
+insert into available_seats1 values(6,7);
+insert into available_seats1 values(6,8);
+insert into available_seats1 values(6,9);
+insert into available_seats1 values(6,10);
+insert into available_seats1 values(6,11);
+insert into available_seats1 values(6,12);
+insert into available_seats1 values(6,13);
+insert into available_seats1 values(6,14);
+insert into available_seats1 values(6,15);
+insert into available_seats1 values(6,16);
+insert into available_seats1 values(6,17);
+insert into available_seats1 values(6,18);
+insert into available_seats1 values(6,19);
+insert into available_seats1 values(6,20);
+insert into available_seats1 values(6,21);
+
+
+insert into available_seats1 values(7,1);
+insert into available_seats1 values(7,2);
+insert into available_seats1 values(7,3);
+insert into available_seats1 values(7,4);
+insert into available_seats1 values(7,5);
+insert into available_seats1 values(7,6);
+insert into available_seats1 values(7,7);
+insert into available_seats1 values(7,8);
+insert into available_seats1 values(7,9);
+insert into available_seats1 values(7,10);
+insert into available_seats1 values(7,11);
+insert into available_seats1 values(7,12);
+insert into available_seats1 values(7,13);
+insert into available_seats1 values(7,14);
+insert into available_seats1 values(7,15);
+insert into available_seats1 values(7,16);
+insert into available_seats1 values(7,17);
+insert into available_seats1 values(7,18);
+insert into available_seats1 values(7,19);
+insert into available_seats1 values(7,20);
+insert into available_seats1 values(7,21);
+
+insert into available_seats1 values(8,1);
+insert into available_seats1 values(8,2);
+insert into available_seats1 values(8,3);
+insert into available_seats1 values(8,4);
+insert into available_seats1 values(8,5);
+insert into available_seats1 values(8,6);
+insert into available_seats1 values(8,7);
+insert into available_seats1 values(8,8);
+insert into available_seats1 values(8,9);
+insert into available_seats1 values(8,10);
+insert into available_seats1 values(8,11);
+insert into available_seats1 values(8,12);
+insert into available_seats1 values(8,13);
+insert into available_seats1 values(8,14);
+insert into available_seats1 values(8,15);
+insert into available_seats1 values(8,16);
+insert into available_seats1 values(8,17);
+insert into available_seats1 values(8,18);
+insert into available_seats1 values(8,19);
+insert into available_seats1 values(8,20);
+insert into available_seats1 values(8,21);
+
+insert into available_seats1 values(9,1);
+insert into available_seats1 values(9,2);
+insert into available_seats1 values(9,3);
+insert into available_seats1 values(9,4);
+insert into available_seats1 values(9,5);
+insert into available_seats1 values(9,6);
+insert into available_seats1 values(9,7);
+insert into available_seats1 values(9,8);
+insert into available_seats1 values(9,9);
+insert into available_seats1 values(9,10);
+insert into available_seats1 values(9,11);
+insert into available_seats1 values(9,12);
+insert into available_seats1 values(9,13);
+insert into available_seats1 values(9,14);
+insert into available_seats1 values(9,15);
+insert into available_seats1 values(9,16);
+insert into available_seats1 values(9,17);
+insert into available_seats1 values(9,18);
+insert into available_seats1 values(9,19);
+insert into available_seats1 values(9,20);
+insert into available_seats1 values(9,21);
+
+insert into available_seats1 values(10,1);
+insert into available_seats1 values(10,2);
+insert into available_seats1 values(10,3);
+insert into available_seats1 values(10,4);
+insert into available_seats1 values(10,5);
+insert into available_seats1 values(10,6);
+insert into available_seats1 values(10,7);
+insert into available_seats1 values(10,8);
+insert into available_seats1 values(10,9);
+insert into available_seats1 values(10,10);
+insert into available_seats1 values(10,11);
+insert into available_seats1 values(10,12);
+insert into available_seats1 values(10,13);
+insert into available_seats1 values(10,14);
+insert into available_seats1 values(10,15);
+insert into available_seats1 values(10,16);
+insert into available_seats1 values(10,17);
+insert into available_seats1 values(10,18);
+insert into available_seats1 values(10,19);
+insert into available_seats1 values(10,20);
+insert into available_seats1 values(10,21);
+
+
+insert into available_seats1 values(11,1);
+insert into available_seats1 values(11,2);
+insert into available_seats1 values(11,3);
+insert into available_seats1 values(11,4);
+insert into available_seats1 values(11,5);
+insert into available_seats1 values(11,6);
+insert into available_seats1 values(11,7);
+insert into available_seats1 values(11,8);
+insert into available_seats1 values(11,9);
+insert into available_seats1 values(11,10);
+insert into available_seats1 values(11,11);
+insert into available_seats1 values(11,12);
+insert into available_seats1 values(11,13);
+insert into available_seats1 values(11,14);
+insert into available_seats1 values(11,15);
+insert into available_seats1 values(11,16);
+insert into available_seats1 values(11,17);
+insert into available_seats1 values(11,18);
+insert into available_seats1 values(11,19);
+insert into available_seats1 values(11,20);
+insert into available_seats1 values(11,21);
+
+insert into available_seats1 values(12,1);
+insert into available_seats1 values(12,2);
+insert into available_seats1 values(12,3);
+insert into available_seats1 values(12,4);
+insert into available_seats1 values(12,5);
+insert into available_seats1 values(12,6);
+insert into available_seats1 values(12,7);
+insert into available_seats1 values(12,8);
+insert into available_seats1 values(12,9);
+insert into available_seats1 values(12,10);
+insert into available_seats1 values(12,11);
+insert into available_seats1 values(12,12);
+insert into available_seats1 values(12,13);
+insert into available_seats1 values(12,14);
+insert into available_seats1 values(12,15);
+insert into available_seats1 values(12,16);
+insert into available_seats1 values(12,17);
+insert into available_seats1 values(12,18);
+insert into available_seats1 values(12,19);
+insert into available_seats1 values(12,20);
+insert into available_seats1 values(12,21);
+
+insert into available_seats1 values(13,1);
+insert into available_seats1 values(13,2);
+insert into available_seats1 values(13,3);
+insert into available_seats1 values(13,4);
+insert into available_seats1 values(13,5);
+insert into available_seats1 values(13,6);
+insert into available_seats1 values(13,7);
+insert into available_seats1 values(13,8);
+insert into available_seats1 values(13,9);
+insert into available_seats1 values(13,10);
+insert into available_seats1 values(13,11);
+insert into available_seats1 values(13,12);
+insert into available_seats1 values(13,13);
+insert into available_seats1 values(13,14);
+insert into available_seats1 values(13,15);
+insert into available_seats1 values(13,16);
+insert into available_seats1 values(13,17);
+insert into available_seats1 values(13,18);
+insert into available_seats1 values(13,19);
+insert into available_seats1 values(13,20);
+insert into available_seats1 values(13,21);
+
+
+insert into available_seats1 values(14,1);
+insert into available_seats1 values(14,2);
+insert into available_seats1 values(14,3);
+insert into available_seats1 values(14,4);
+insert into available_seats1 values(14,5);
+insert into available_seats1 values(14,6);
+insert into available_seats1 values(14,7);
+insert into available_seats1 values(14,8);
+insert into available_seats1 values(14,9);
+insert into available_seats1 values(14,10);
+insert into available_seats1 values(14,11);
+insert into available_seats1 values(14,12);
+insert into available_seats1 values(14,13);
+insert into available_seats1 values(14,14);
+insert into available_seats1 values(14,15);
+insert into available_seats1 values(14,16);
+insert into available_seats1 values(14,17);
+insert into available_seats1 values(14,18);
+insert into available_seats1 values(14,19);
+insert into available_seats1 values(14,20);
+insert into available_seats1 values(14,21);
+
+insert into available_seats1 values(15,1);
+insert into available_seats1 values(15,2);
+insert into available_seats1 values(15,3);
+insert into available_seats1 values(15,4);
+insert into available_seats1 values(15,5);
+insert into available_seats1 values(15,6);
+insert into available_seats1 values(15,7);
+insert into available_seats1 values(15,8);
+insert into available_seats1 values(15,9);
+insert into available_seats1 values(15,10);
+insert into available_seats1 values(15,11);
+insert into available_seats1 values(15,12);
+insert into available_seats1 values(15,13);
+insert into available_seats1 values(15,14);
+insert into available_seats1 values(15,15);
+insert into available_seats1 values(15,16);
+insert into available_seats1 values(15,17);
+insert into available_seats1 values(15,18);
+insert into available_seats1 values(15,19);
+insert into available_seats1 values(15,20);
+insert into available_seats1 values(15,21);
+
+
+insert into available_seats1 values(16,1);
+insert into available_seats1 values(16,2);
+insert into available_seats1 values(16,3);
+insert into available_seats1 values(16,4);
+insert into available_seats1 values(16,5);
+insert into available_seats1 values(16,6);
+insert into available_seats1 values(16,7);
+insert into available_seats1 values(16,8);
+insert into available_seats1 values(16,9);
+insert into available_seats1 values(16,10);
+insert into available_seats1 values(16,11);
+insert into available_seats1 values(16,12);
+insert into available_seats1 values(16,13);
+insert into available_seats1 values(16,14);
+insert into available_seats1 values(16,15);
+insert into available_seats1 values(16,16);
+insert into available_seats1 values(16,17);
+insert into available_seats1 values(16,18);
+insert into available_seats1 values(16,19);
+insert into available_seats1 values(16,20);
+insert into available_seats1 values(16,21);
+
+insert into available_seats1 values(17,1);
+insert into available_seats1 values(17,2);
+insert into available_seats1 values(17,3);
+insert into available_seats1 values(17,4);
+insert into available_seats1 values(17,5);
+insert into available_seats1 values(17,6);
+insert into available_seats1 values(17,7);
+insert into available_seats1 values(17,8);
+insert into available_seats1 values(17,9);
+insert into available_seats1 values(17,10);
+insert into available_seats1 values(17,11);
+insert into available_seats1 values(17,12);
+insert into available_seats1 values(17,13);
+insert into available_seats1 values(17,14);
+insert into available_seats1 values(17,15);
+insert into available_seats1 values(17,16);
+insert into available_seats1 values(17,17);
+insert into available_seats1 values(17,18);
+insert into available_seats1 values(17,19);
+insert into available_seats1 values(17,20);
+insert into available_seats1 values(17,21);
+
+insert into available_seats1 values(18,1);
+insert into available_seats1 values(18,2);
+insert into available_seats1 values(18,3);
+insert into available_seats1 values(18,4);
+insert into available_seats1 values(18,5);
+insert into available_seats1 values(18,6);
+insert into available_seats1 values(18,7);
+insert into available_seats1 values(18,8);
+insert into available_seats1 values(18,9);
+insert into available_seats1 values(18,10);
+insert into available_seats1 values(18,11);
+insert into available_seats1 values(18,12);
+insert into available_seats1 values(18,13);
+insert into available_seats1 values(18,14);
+insert into available_seats1 values(18,15);
+insert into available_seats1 values(18,16);
+insert into available_seats1 values(18,17);
+insert into available_seats1 values(18,18);
+insert into available_seats1 values(18,19);
+insert into available_seats1 values(18,20);
+insert into available_seats1 values(18,21);
+
+insert into available_seats1 values(19,1);
+insert into available_seats1 values(19,2);
+insert into available_seats1 values(19,3);
+insert into available_seats1 values(19,4);
+insert into available_seats1 values(19,5);
+insert into available_seats1 values(19,6);
+insert into available_seats1 values(19,7);
+insert into available_seats1 values(19,8);
+insert into available_seats1 values(19,9);
+insert into available_seats1 values(19,10);
+insert into available_seats1 values(19,11);
+insert into available_seats1 values(19,12);
+insert into available_seats1 values(19,13);
+insert into available_seats1 values(19,14);
+insert into available_seats1 values(19,15);
+insert into available_seats1 values(19,16);
+insert into available_seats1 values(19,17);
+insert into available_seats1 values(19,18);
+insert into available_seats1 values(19,19);
+insert into available_seats1 values(19,20);
+insert into available_seats1 values(19,21);
+
+insert into available_seats1 values(20,1);
+insert into available_seats1 values(20,2);
+insert into available_seats1 values(20,3);
+insert into available_seats1 values(20,4);
+insert into available_seats1 values(20,5);
+insert into available_seats1 values(20,6);
+insert into available_seats1 values(20,7);
+insert into available_seats1 values(20,8);
+insert into available_seats1 values(20,9);
+insert into available_seats1 values(20,10);
+insert into available_seats1 values(20,11);
+insert into available_seats1 values(20,12);
+insert into available_seats1 values(20,13);
+insert into available_seats1 values(20,14);
+insert into available_seats1 values(20,15);
+insert into available_seats1 values(20,16);
+insert into available_seats1 values(20,17);
+insert into available_seats1 values(20,18);
+insert into available_seats1 values(20,19);
+insert into available_seats1 values(20,20);
+insert into available_seats1 values(20,21);
+
+
+insert into available_seats1 values(21,1);
+insert into available_seats1 values(21,2);
+insert into available_seats1 values(21,3);
+insert into available_seats1 values(21,4);
+insert into available_seats1 values(21,5);
+insert into available_seats1 values(21,6);
+insert into available_seats1 values(21,7);
+insert into available_seats1 values(21,8);
+insert into available_seats1 values(21,9);
+insert into available_seats1 values(21,10);
+insert into available_seats1 values(21,11);
+insert into available_seats1 values(21,12);
+insert into available_seats1 values(21,13);
+insert into available_seats1 values(21,14);
+insert into available_seats1 values(21,15);
+insert into available_seats1 values(21,16);
+insert into available_seats1 values(21,17);
+insert into available_seats1 values(21,18);
+insert into available_seats1 values(21,19);
+insert into available_seats1 values(21,20);
+insert into available_seats1 values(21,21);
+
+insert into available_seats1 values(22,1);
+insert into available_seats1 values(22,2);
+insert into available_seats1 values(22,3);
+insert into available_seats1 values(22,4);
+insert into available_seats1 values(22,5);
+insert into available_seats1 values(22,6);
+insert into available_seats1 values(22,7);
+insert into available_seats1 values(22,8);
+insert into available_seats1 values(22,9);
+insert into available_seats1 values(22,10);
+insert into available_seats1 values(22,11);
+insert into available_seats1 values(22,12);
+insert into available_seats1 values(22,13);
+insert into available_seats1 values(22,14);
+insert into available_seats1 values(22,15);
+insert into available_seats1 values(22,16);
+insert into available_seats1 values(22,17);
+insert into available_seats1 values(22,18);
+insert into available_seats1 values(22,19);
+insert into available_seats1 values(22,20);
+insert into available_seats1 values(22,21);
+
+insert into available_seats1 values(23,1);
+insert into available_seats1 values(23,2);
+insert into available_seats1 values(23,3);
+insert into available_seats1 values(23,4);
+insert into available_seats1 values(23,5);
+insert into available_seats1 values(23,6);
+insert into available_seats1 values(23,7);
+insert into available_seats1 values(23,8);
+insert into available_seats1 values(23,9);
+insert into available_seats1 values(23,10);
+insert into available_seats1 values(23,11);
+insert into available_seats1 values(23,12);
+insert into available_seats1 values(23,13);
+insert into available_seats1 values(23,14);
+insert into available_seats1 values(23,15);
+insert into available_seats1 values(23,16);
+insert into available_seats1 values(23,17);
+insert into available_seats1 values(23,18);
+insert into available_seats1 values(23,19);
+insert into available_seats1 values(23,20);
+insert into available_seats1 values(23,21);
+
+insert into available_seats1 values(24,1);
+insert into available_seats1 values(24,2);
+insert into available_seats1 values(24,3);
+insert into available_seats1 values(24,4);
+insert into available_seats1 values(24,5);
+insert into available_seats1 values(24,6);
+insert into available_seats1 values(24,7);
+insert into available_seats1 values(24,8);
+insert into available_seats1 values(24,9);
+insert into available_seats1 values(24,10);
+insert into available_seats1 values(24,11);
+insert into available_seats1 values(24,12);
+insert into available_seats1 values(24,13);
+insert into available_seats1 values(24,14);
+insert into available_seats1 values(24,15);
+insert into available_seats1 values(24,16);
+insert into available_seats1 values(24,17);
+insert into available_seats1 values(24,18);
+insert into available_seats1 values(24,19);
+insert into available_seats1 values(24,20);
+insert into available_seats1 values(24,21);
+
+insert into available_seats1 values(25,1);
+insert into available_seats1 values(25,2);
+insert into available_seats1 values(25,3);
+insert into available_seats1 values(25,4);
+insert into available_seats1 values(25,5);
+insert into available_seats1 values(25,6);
+insert into available_seats1 values(25,7);
+insert into available_seats1 values(25,8);
+insert into available_seats1 values(25,9);
+insert into available_seats1 values(25,10);
+insert into available_seats1 values(25,11);
+insert into available_seats1 values(25,12);
+insert into available_seats1 values(25,13);
+insert into available_seats1 values(25,14);
+insert into available_seats1 values(25,15);
+insert into available_seats1 values(25,16);
+insert into available_seats1 values(25,17);
+insert into available_seats1 values(25,18);
+insert into available_seats1 values(25,19);
+insert into available_seats1 values(25,20);
+insert into available_seats1 values(25,21);
+
+insert into available_seats1 values(26,1);
+insert into available_seats1 values(26,2);
+insert into available_seats1 values(26,3);
+insert into available_seats1 values(26,4);
+insert into available_seats1 values(26,5);
+insert into available_seats1 values(26,6);
+insert into available_seats1 values(26,7);
+insert into available_seats1 values(26,8);
+insert into available_seats1 values(26,9);
+insert into available_seats1 values(26,10);
+insert into available_seats1 values(26,11);
+insert into available_seats1 values(26,12);
+insert into available_seats1 values(26,13);
+insert into available_seats1 values(26,14);
+insert into available_seats1 values(26,15);
+insert into available_seats1 values(26,16);
+insert into available_seats1 values(26,17);
+insert into available_seats1 values(26,18);
+insert into available_seats1 values(26,19);
+insert into available_seats1 values(26,20);
+insert into available_seats1 values(26,21);
+
+insert into available_seats1 values(27,1);
+insert into available_seats1 values(27,2);
+insert into available_seats1 values(27,3);
+insert into available_seats1 values(27,4);
+insert into available_seats1 values(27,5);
+insert into available_seats1 values(27,6);
+insert into available_seats1 values(27,7);
+insert into available_seats1 values(27,8);
+insert into available_seats1 values(27,9);
+insert into available_seats1 values(27,10);
+insert into available_seats1 values(27,11);
+insert into available_seats1 values(27,12);
+insert into available_seats1 values(27,13);
+insert into available_seats1 values(27,14);
+insert into available_seats1 values(27,15);
+insert into available_seats1 values(27,16);
+insert into available_seats1 values(27,17);
+insert into available_seats1 values(27,18);
+insert into available_seats1 values(27,19);
+insert into available_seats1 values(27,20);
+insert into available_seats1 values(27,21);
+
+insert into available_seats1 values(28,1);
+insert into available_seats1 values(28,2);
+insert into available_seats1 values(28,3);
+insert into available_seats1 values(28,4);
+insert into available_seats1 values(28,5);
+insert into available_seats1 values(28,6);
+insert into available_seats1 values(28,7);
+insert into available_seats1 values(28,8);
+insert into available_seats1 values(28,9);
+insert into available_seats1 values(28,10);
+insert into available_seats1 values(28,11);
+insert into available_seats1 values(28,12);
+insert into available_seats1 values(28,13);
+insert into available_seats1 values(28,14);
+insert into available_seats1 values(28,15);
+insert into available_seats1 values(28,16);
+insert into available_seats1 values(28,17);
+insert into available_seats1 values(28,18);
+insert into available_seats1 values(28,19);
+insert into available_seats1 values(28,20);
+insert into available_seats1 values(28,21);
+
+insert into available_seats1 values(29,1);
+insert into available_seats1 values(29,2);
+insert into available_seats1 values(29,3);
+insert into available_seats1 values(29,4);
+insert into available_seats1 values(29,5);
+insert into available_seats1 values(29,6);
+insert into available_seats1 values(29,7);
+insert into available_seats1 values(29,8);
+insert into available_seats1 values(29,9);
+insert into available_seats1 values(29,10);
+insert into available_seats1 values(29,11);
+insert into available_seats1 values(29,12);
+insert into available_seats1 values(29,13);
+insert into available_seats1 values(29,14);
+insert into available_seats1 values(29,15);
+insert into available_seats1 values(29,16);
+insert into available_seats1 values(29,17);
+insert into available_seats1 values(29,18);
+insert into available_seats1 values(29,19);
+insert into available_seats1 values(29,20);
+insert into available_seats1 values(29,21);
+
+insert into available_seats1 values(30,1);
+insert into available_seats1 values(30,2);
+insert into available_seats1 values(30,3);
+insert into available_seats1 values(30,4);
+insert into available_seats1 values(30,5);
+insert into available_seats1 values(30,6);
+insert into available_seats1 values(30,7);
+insert into available_seats1 values(30,8);
+insert into available_seats1 values(30,9);
+insert into available_seats1 values(30,10);
+insert into available_seats1 values(30,11);
+insert into available_seats1 values(30,12);
+insert into available_seats1 values(30,13);
+insert into available_seats1 values(30,14);
+insert into available_seats1 values(30,15);
+insert into available_seats1 values(30,16);
+insert into available_seats1 values(30,17);
+insert into available_seats1 values(30,18);
+insert into available_seats1 values(30,19);
+insert into available_seats1 values(30,20);
+insert into available_seats1 values(30,21);
+
+insert into available_seats1 values(31,1);
+insert into available_seats1 values(31,2);
+insert into available_seats1 values(31,3);
+insert into available_seats1 values(31,4);
+insert into available_seats1 values(31,5);
+insert into available_seats1 values(31,6);
+insert into available_seats1 values(31,7);
+insert into available_seats1 values(31,8);
+insert into available_seats1 values(31,9);
+insert into available_seats1 values(31,10);
+insert into available_seats1 values(31,11);
+insert into available_seats1 values(31,12);
+insert into available_seats1 values(31,13);
+insert into available_seats1 values(31,14);
+insert into available_seats1 values(31,15);
+insert into available_seats1 values(31,16);
+insert into available_seats1 values(31,17);
+insert into available_seats1 values(31,18);
+insert into available_seats1 values(31,19);
+insert into available_seats1 values(31,20);
+insert into available_seats1 values(31,21);
+
+insert into available_seats1 values(32,1);
+insert into available_seats1 values(32,2);
+insert into available_seats1 values(32,3);
+insert into available_seats1 values(32,4);
+insert into available_seats1 values(32,5);
+insert into available_seats1 values(32,6);
+insert into available_seats1 values(32,7);
+insert into available_seats1 values(32,8);
+insert into available_seats1 values(32,9);
+insert into available_seats1 values(32,10);
+insert into available_seats1 values(32,11);
+insert into available_seats1 values(32,12);
+insert into available_seats1 values(32,13);
+insert into available_seats1 values(32,14);
+insert into available_seats1 values(32,15);
+insert into available_seats1 values(32,16);
+insert into available_seats1 values(32,17);
+insert into available_seats1 values(32,18);
+insert into available_seats1 values(32,19);
+insert into available_seats1 values(32,20);
+insert into available_seats1 values(32,21);
+
+insert into available_seats1 values(33,1);
+insert into available_seats1 values(33,2);
+insert into available_seats1 values(33,3);
+insert into available_seats1 values(33,4);
+insert into available_seats1 values(33,5);
+insert into available_seats1 values(33,6);
+insert into available_seats1 values(33,7);
+insert into available_seats1 values(33,8);
+insert into available_seats1 values(33,9);
+insert into available_seats1 values(33,10);
+insert into available_seats1 values(33,11);
+insert into available_seats1 values(33,12);
+insert into available_seats1 values(33,13);
+insert into available_seats1 values(33,14);
+insert into available_seats1 values(33,15);
+insert into available_seats1 values(33,16);
+insert into available_seats1 values(33,17);
+insert into available_seats1 values(33,18);
+insert into available_seats1 values(33,19);
+insert into available_seats1 values(33,20);
+insert into available_seats1 values(33,21);
+
+insert into available_seats1 values(34,1);
+insert into available_seats1 values(34,2);
+insert into available_seats1 values(34,3);
+insert into available_seats1 values(34,4);
+insert into available_seats1 values(34,5);
+insert into available_seats1 values(34,6);
+insert into available_seats1 values(34,7);
+insert into available_seats1 values(34,8);
+insert into available_seats1 values(34,9);
+insert into available_seats1 values(34,10);
+insert into available_seats1 values(34,11);
+insert into available_seats1 values(34,12);
+insert into available_seats1 values(34,13);
+insert into available_seats1 values(34,14);
+insert into available_seats1 values(34,15);
+insert into available_seats1 values(34,16);
+insert into available_seats1 values(34,17);
+insert into available_seats1 values(34,18);
+insert into available_seats1 values(34,19);
+insert into available_seats1 values(34,20);
+insert into available_seats1 values(34,21);
+
+insert into available_seats1 values(35,1);
+insert into available_seats1 values(35,2);
+insert into available_seats1 values(35,3);
+insert into available_seats1 values(35,4);
+insert into available_seats1 values(35,5);
+insert into available_seats1 values(35,6);
+insert into available_seats1 values(35,7);
+insert into available_seats1 values(35,8);
+insert into available_seats1 values(35,9);
+insert into available_seats1 values(35,10);
+insert into available_seats1 values(35,11);
+insert into available_seats1 values(35,12);
+insert into available_seats1 values(35,13);
+insert into available_seats1 values(35,14);
+insert into available_seats1 values(35,15);
+insert into available_seats1 values(35,16);
+insert into available_seats1 values(35,17);
+insert into available_seats1 values(35,18);
+insert into available_seats1 values(35,19);
+insert into available_seats1 values(35,20);
+insert into available_seats1 values(35,21);
+
+insert into available_seats1 values(36,1);
+insert into available_seats1 values(36,2);
+insert into available_seats1 values(36,3);
+insert into available_seats1 values(36,4);
+insert into available_seats1 values(36,5);
+insert into available_seats1 values(36,6);
+insert into available_seats1 values(36,7);
+insert into available_seats1 values(36,8);
+insert into available_seats1 values(36,9);
+insert into available_seats1 values(36,10);
+insert into available_seats1 values(36,11);
+insert into available_seats1 values(36,12);
+insert into available_seats1 values(36,13);
+insert into available_seats1 values(36,14);
+insert into available_seats1 values(36,15);
+insert into available_seats1 values(36,16);
+insert into available_seats1 values(36,17);
+insert into available_seats1 values(36,18);
+insert into available_seats1 values(36,19);
+insert into available_seats1 values(36,20);
+insert into available_seats1 values(36,21);
+
+insert into available_seats1 values(37,1);
+insert into available_seats1 values(37,2);
+insert into available_seats1 values(37,3);
+insert into available_seats1 values(37,4);
+insert into available_seats1 values(37,5);
+insert into available_seats1 values(37,6);
+insert into available_seats1 values(37,7);
+insert into available_seats1 values(37,8);
+insert into available_seats1 values(37,9);
+insert into available_seats1 values(37,10);
+insert into available_seats1 values(37,11);
+insert into available_seats1 values(37,12);
+insert into available_seats1 values(37,13);
+insert into available_seats1 values(37,14);
+insert into available_seats1 values(37,15);
+insert into available_seats1 values(37,16);
+insert into available_seats1 values(37,17);
+insert into available_seats1 values(37,18);
+insert into available_seats1 values(37,19);
+insert into available_seats1 values(37,20);
+insert into available_seats1 values(37,21);
+
+insert into available_seats1 values(38,1);
+insert into available_seats1 values(38,2);
+insert into available_seats1 values(38,3);
+insert into available_seats1 values(38,4);
+insert into available_seats1 values(38,5);
+insert into available_seats1 values(38,6);
+insert into available_seats1 values(38,7);
+insert into available_seats1 values(38,8);
+insert into available_seats1 values(38,9);
+insert into available_seats1 values(38,10);
+insert into available_seats1 values(38,11);
+insert into available_seats1 values(38,12);
+insert into available_seats1 values(38,13);
+insert into available_seats1 values(38,14);
+insert into available_seats1 values(38,15);
+insert into available_seats1 values(38,16);
+insert into available_seats1 values(38,17);
+insert into available_seats1 values(38,18);
+insert into available_seats1 values(38,19);
+insert into available_seats1 values(38,20);
+insert into available_seats1 values(38,21);
+
+insert into available_seats1 values(39,1);
+insert into available_seats1 values(39,2);
+insert into available_seats1 values(39,3);
+insert into available_seats1 values(39,4);
+insert into available_seats1 values(39,5);
+insert into available_seats1 values(39,6);
+insert into available_seats1 values(39,7);
+insert into available_seats1 values(39,8);
+insert into available_seats1 values(39,9);
+insert into available_seats1 values(39,10);
+insert into available_seats1 values(39,11);
+insert into available_seats1 values(39,12);
+insert into available_seats1 values(39,13);
+insert into available_seats1 values(39,14);
+insert into available_seats1 values(39,15);
+insert into available_seats1 values(39,16);
+insert into available_seats1 values(39,17);
+insert into available_seats1 values(39,18);
+insert into available_seats1 values(39,19);
+insert into available_seats1 values(39,20);
+insert into available_seats1 values(39,21);
+
+insert into available_seats1 values(40,1);
+insert into available_seats1 values(40,2);
+insert into available_seats1 values(40,3);
+insert into available_seats1 values(40,4);
+insert into available_seats1 values(40,5);
+insert into available_seats1 values(40,6);
+insert into available_seats1 values(40,7);
+insert into available_seats1 values(40,8);
+insert into available_seats1 values(40,9);
+insert into available_seats1 values(40,10);
+insert into available_seats1 values(40,11);
+insert into available_seats1 values(40,12);
+insert into available_seats1 values(40,13);
+insert into available_seats1 values(40,14);
+insert into available_seats1 values(40,15);
+insert into available_seats1 values(40,16);
+insert into available_seats1 values(40,17);
+insert into available_seats1 values(40,18);
+insert into available_seats1 values(40,19);
+insert into available_seats1 values(40,20);
+insert into available_seats1 values(40,21);
+
+insert into available_seats1 values(41,1);
+insert into available_seats1 values(41,2);
+insert into available_seats1 values(41,3);
+insert into available_seats1 values(41,4);
+insert into available_seats1 values(41,5);
+insert into available_seats1 values(41,6);
+insert into available_seats1 values(41,7);
+insert into available_seats1 values(41,8);
+insert into available_seats1 values(41,9);
+insert into available_seats1 values(41,10);
+insert into available_seats1 values(41,11);
+insert into available_seats1 values(41,12);
+insert into available_seats1 values(41,13);
+insert into available_seats1 values(41,14);
+insert into available_seats1 values(41,15);
+insert into available_seats1 values(41,16);
+insert into available_seats1 values(41,17);
+insert into available_seats1 values(41,18);
+insert into available_seats1 values(41,19);
+insert into available_seats1 values(41,20);
+insert into available_seats1 values(41,21);
+
+insert into available_seats1 values(42,1);
+insert into available_seats1 values(42,2);
+insert into available_seats1 values(42,3);
+insert into available_seats1 values(42,4);
+insert into available_seats1 values(42,5);
+insert into available_seats1 values(42,6);
+insert into available_seats1 values(42,7);
+insert into available_seats1 values(42,8);
+insert into available_seats1 values(42,9);
+insert into available_seats1 values(42,10);
+insert into available_seats1 values(42,11);
+insert into available_seats1 values(42,12);
+insert into available_seats1 values(42,13);
+insert into available_seats1 values(42,14);
+insert into available_seats1 values(42,15);
+insert into available_seats1 values(42,16);
+insert into available_seats1 values(42,17);
+insert into available_seats1 values(42,18);
+insert into available_seats1 values(42,19);
+insert into available_seats1 values(42,20);
+insert into available_seats1 values(42,21);
+
+insert into available_seats1 values(43,1);
+insert into available_seats1 values(43,2);
+insert into available_seats1 values(43,3);
+insert into available_seats1 values(43,4);
+insert into available_seats1 values(43,5);
+insert into available_seats1 values(43,6);
+insert into available_seats1 values(43,7);
+insert into available_seats1 values(43,8);
+insert into available_seats1 values(43,9);
+insert into available_seats1 values(43,10);
+insert into available_seats1 values(43,11);
+insert into available_seats1 values(43,12);
+insert into available_seats1 values(43,13);
+insert into available_seats1 values(43,14);
+insert into available_seats1 values(43,15);
+insert into available_seats1 values(43,16);
+insert into available_seats1 values(43,17);
+insert into available_seats1 values(43,18);
+insert into available_seats1 values(43,19);
+insert into available_seats1 values(43,20);
+insert into available_seats1 values(43,21);
+
+
+insert into available_seats1 values(44,1);
+insert into available_seats1 values(44,2);
+insert into available_seats1 values(44,3);
+insert into available_seats1 values(44,4);
+insert into available_seats1 values(44,5);
+insert into available_seats1 values(44,6);
+insert into available_seats1 values(44,7);
+insert into available_seats1 values(44,8);
+insert into available_seats1 values(44,9);
+insert into available_seats1 values(44,10);
+insert into available_seats1 values(44,11);
+insert into available_seats1 values(44,12);
+insert into available_seats1 values(44,13);
+insert into available_seats1 values(44,14);
+insert into available_seats1 values(44,15);
+insert into available_seats1 values(44,16);
+insert into available_seats1 values(44,17);
+insert into available_seats1 values(44,18);
+insert into available_seats1 values(44,19);
+insert into available_seats1 values(44,20);
+insert into available_seats1 values(44,21);
+
+insert into available_seats1 values(45,1);
+insert into available_seats1 values(45,2);
+insert into available_seats1 values(45,3);
+insert into available_seats1 values(45,4);
+insert into available_seats1 values(45,5);
+insert into available_seats1 values(45,6);
+insert into available_seats1 values(45,7);
+insert into available_seats1 values(45,8);
+insert into available_seats1 values(45,9);
+insert into available_seats1 values(45,10);
+insert into available_seats1 values(45,11);
+insert into available_seats1 values(45,12);
+insert into available_seats1 values(45,13);
+insert into available_seats1 values(45,14);
+insert into available_seats1 values(45,15);
+insert into available_seats1 values(45,16);
+insert into available_seats1 values(45,17);
+insert into available_seats1 values(45,18);
+insert into available_seats1 values(45,19);
+insert into available_seats1 values(45,20);
+insert into available_seats1 values(45,21);
+
+insert into available_seats1 values(46,1);
+insert into available_seats1 values(46,2);
+insert into available_seats1 values(46,3);
+insert into available_seats1 values(46,4);
+insert into available_seats1 values(46,5);
+insert into available_seats1 values(46,6);
+insert into available_seats1 values(46,7);
+insert into available_seats1 values(46,8);
+insert into available_seats1 values(46,9);
+insert into available_seats1 values(46,10);
+insert into available_seats1 values(46,11);
+insert into available_seats1 values(46,12);
+insert into available_seats1 values(46,13);
+insert into available_seats1 values(46,14);
+insert into available_seats1 values(46,15);
+insert into available_seats1 values(46,16);
+insert into available_seats1 values(46,17);
+insert into available_seats1 values(46,18);
+insert into available_seats1 values(46,19);
+insert into available_seats1 values(46,20);
+insert into available_seats1 values(46,21);
+
+insert into available_seats1 values(47,1);
+insert into available_seats1 values(47,2);
+insert into available_seats1 values(47,3);
+insert into available_seats1 values(47,4);
+insert into available_seats1 values(47,5);
+insert into available_seats1 values(47,6);
+insert into available_seats1 values(47,7);
+insert into available_seats1 values(47,8);
+insert into available_seats1 values(47,9);
+insert into available_seats1 values(47,10);
+insert into available_seats1 values(47,11);
+insert into available_seats1 values(47,12);
+insert into available_seats1 values(47,13);
+insert into available_seats1 values(47,14);
+insert into available_seats1 values(47,15);
+insert into available_seats1 values(47,16);
+insert into available_seats1 values(47,17);
+insert into available_seats1 values(47,18);
+insert into available_seats1 values(47,19);
+insert into available_seats1 values(47,20);
+insert into available_seats1 values(47,21);
+
+insert into available_seats1 values(48,1);
+insert into available_seats1 values(48,2);
+insert into available_seats1 values(48,3);
+insert into available_seats1 values(48,4);
+insert into available_seats1 values(48,5);
+insert into available_seats1 values(48,6);
+insert into available_seats1 values(48,7);
+insert into available_seats1 values(48,8);
+insert into available_seats1 values(48,9);
+insert into available_seats1 values(48,10);
+insert into available_seats1 values(48,11);
+insert into available_seats1 values(48,12);
+insert into available_seats1 values(48,13);
+insert into available_seats1 values(48,14);
+insert into available_seats1 values(48,15);
+insert into available_seats1 values(48,16);
+insert into available_seats1 values(48,17);
+insert into available_seats1 values(48,18);
+insert into available_seats1 values(48,19);
+insert into available_seats1 values(48,20);
+insert into available_seats1 values(48,21);
+
+insert into available_seats1 values(49,1);
+insert into available_seats1 values(49,2);
+insert into available_seats1 values(49,3);
+insert into available_seats1 values(49,4);
+insert into available_seats1 values(49,5);
+insert into available_seats1 values(49,6);
+insert into available_seats1 values(49,7);
+insert into available_seats1 values(49,8);
+insert into available_seats1 values(49,9);
+insert into available_seats1 values(49,10);
+insert into available_seats1 values(49,11);
+insert into available_seats1 values(49,12);
+insert into available_seats1 values(49,13);
+insert into available_seats1 values(49,14);
+insert into available_seats1 values(49,15);
+insert into available_seats1 values(49,16);
+insert into available_seats1 values(49,17);
+insert into available_seats1 values(49,18);
+insert into available_seats1 values(49,19);
+insert into available_seats1 values(49,20);
+insert into available_seats1 values(49,21);
+
+insert into available_seats1 values(50,1);
+insert into available_seats1 values(50,2);
+insert into available_seats1 values(50,3);
+insert into available_seats1 values(50,4);
+insert into available_seats1 values(50,5);
+insert into available_seats1 values(50,6);
+insert into available_seats1 values(50,7);
+insert into available_seats1 values(50,8);
+insert into available_seats1 values(50,9);
+insert into available_seats1 values(50,10);
+insert into available_seats1 values(50,11);
+insert into available_seats1 values(50,12);
+insert into available_seats1 values(50,13);
+insert into available_seats1 values(50,14);
+insert into available_seats1 values(50,15);
+insert into available_seats1 values(50,16);
+insert into available_seats1 values(50,17);
+insert into available_seats1 values(50,18);
+insert into available_seats1 values(50,19);
+insert into available_seats1 values(50,20);
+insert into available_seats1 values(50,21);
+
+insert into available_seats1 values(51,1);
+insert into available_seats1 values(51,2);
+insert into available_seats1 values(51,3);
+insert into available_seats1 values(51,4);
+insert into available_seats1 values(51,5);
+insert into available_seats1 values(51,6);
+insert into available_seats1 values(51,7);
+insert into available_seats1 values(51,8);
+insert into available_seats1 values(51,9);
+insert into available_seats1 values(51,10);
+insert into available_seats1 values(51,11);
+insert into available_seats1 values(51,12);
+insert into available_seats1 values(51,13);
+insert into available_seats1 values(51,14);
+insert into available_seats1 values(51,15);
+insert into available_seats1 values(51,16);
+insert into available_seats1 values(51,17);
+insert into available_seats1 values(51,18);
+insert into available_seats1 values(51,19);
+insert into available_seats1 values(51,20);
+insert into available_seats1 values(51,21);
+
+insert into available_seats1 values(52,1);
+insert into available_seats1 values(52,2);
+insert into available_seats1 values(52,3);
+insert into available_seats1 values(52,4);
+insert into available_seats1 values(52,5);
+insert into available_seats1 values(52,6);
+insert into available_seats1 values(52,7);
+insert into available_seats1 values(52,8);
+insert into available_seats1 values(52,9);
+insert into available_seats1 values(52,10);
+insert into available_seats1 values(52,11);
+insert into available_seats1 values(52,12);
+insert into available_seats1 values(52,13);
+insert into available_seats1 values(52,14);
+insert into available_seats1 values(52,15);
+insert into available_seats1 values(52,16);
+insert into available_seats1 values(52,17);
+insert into available_seats1 values(52,18);
+insert into available_seats1 values(52,19);
+insert into available_seats1 values(52,20);
+insert into available_seats1 values(52,21);
+
+insert into available_seats1 values(53,1);
+insert into available_seats1 values(53,2);
+insert into available_seats1 values(53,3);
+insert into available_seats1 values(53,4);
+insert into available_seats1 values(53,5);
+insert into available_seats1 values(53,6);
+insert into available_seats1 values(53,7);
+insert into available_seats1 values(53,8);
+insert into available_seats1 values(53,9);
+insert into available_seats1 values(53,10);
+insert into available_seats1 values(53,11);
+insert into available_seats1 values(53,12);
+insert into available_seats1 values(53,13);
+insert into available_seats1 values(53,14);
+insert into available_seats1 values(53,15);
+insert into available_seats1 values(53,16);
+insert into available_seats1 values(53,17);
+insert into available_seats1 values(53,18);
+insert into available_seats1 values(53,19);
+insert into available_seats1 values(53,20);
+insert into available_seats1 values(53,21);
+
+insert into available_seats1 values(54,1);
+insert into available_seats1 values(54,2);
+insert into available_seats1 values(54,3);
+insert into available_seats1 values(54,4);
+insert into available_seats1 values(54,5);
+insert into available_seats1 values(54,6);
+insert into available_seats1 values(54,7);
+insert into available_seats1 values(54,8);
+insert into available_seats1 values(54,9);
+insert into available_seats1 values(54,10);
+insert into available_seats1 values(54,11);
+insert into available_seats1 values(54,12);
+insert into available_seats1 values(54,13);
+insert into available_seats1 values(54,14);
+insert into available_seats1 values(54,15);
+insert into available_seats1 values(54,16);
+insert into available_seats1 values(54,17);
+insert into available_seats1 values(54,18);
+insert into available_seats1 values(54,19);
+insert into available_seats1 values(54,20);
+insert into available_seats1 values(54,21);
+
+insert into available_seats1 values(55,1);
+insert into available_seats1 values(55,2);
+insert into available_seats1 values(55,3);
+insert into available_seats1 values(55,4);
+insert into available_seats1 values(55,5);
+insert into available_seats1 values(55,6);
+insert into available_seats1 values(55,7);
+insert into available_seats1 values(55,8);
+insert into available_seats1 values(55,9);
+insert into available_seats1 values(55,10);
+insert into available_seats1 values(55,11);
+insert into available_seats1 values(55,12);
+insert into available_seats1 values(55,13);
+insert into available_seats1 values(55,14);
+insert into available_seats1 values(55,15);
+insert into available_seats1 values(55,16);
+insert into available_seats1 values(55,17);
+insert into available_seats1 values(55,18);
+insert into available_seats1 values(55,19);
+insert into available_seats1 values(55,20);
+insert into available_seats1 values(55,21);
+
+insert into available_seats1 values(56,1);
+insert into available_seats1 values(56,2);
+insert into available_seats1 values(56,3);
+insert into available_seats1 values(56,4);
+insert into available_seats1 values(56,5);
+insert into available_seats1 values(56,6);
+insert into available_seats1 values(56,7);
+insert into available_seats1 values(56,8);
+insert into available_seats1 values(56,9);
+insert into available_seats1 values(56,10);
+insert into available_seats1 values(56,11);
+insert into available_seats1 values(56,12);
+insert into available_seats1 values(56,13);
+insert into available_seats1 values(56,14);
+insert into available_seats1 values(56,15);
+insert into available_seats1 values(56,16);
+insert into available_seats1 values(56,17);
+insert into available_seats1 values(56,18);
+insert into available_seats1 values(56,19);
+insert into available_seats1 values(56,20);
+insert into available_seats1 values(56,21);
+
+insert into available_seats1 values(57,1);
+insert into available_seats1 values(57,2);
+insert into available_seats1 values(57,3);
+insert into available_seats1 values(57,4);
+insert into available_seats1 values(57,5);
+insert into available_seats1 values(57,6);
+insert into available_seats1 values(57,7);
+insert into available_seats1 values(57,8);
+insert into available_seats1 values(57,9);
+insert into available_seats1 values(57,10);
+insert into available_seats1 values(57,11);
+insert into available_seats1 values(57,12);
+insert into available_seats1 values(57,13);
+insert into available_seats1 values(57,14);
+insert into available_seats1 values(57,15);
+insert into available_seats1 values(57,16);
+insert into available_seats1 values(57,17);
+insert into available_seats1 values(57,18);
+insert into available_seats1 values(57,19);
+insert into available_seats1 values(57,20);
+insert into available_seats1 values(57,21);
+
+insert into available_seats1 values(58,1);
+insert into available_seats1 values(58,2);
+insert into available_seats1 values(58,3);
+insert into available_seats1 values(58,4);
+insert into available_seats1 values(58,5);
+insert into available_seats1 values(58,6);
+insert into available_seats1 values(58,7);
+insert into available_seats1 values(58,8);
+insert into available_seats1 values(58,9);
+insert into available_seats1 values(58,10);
+insert into available_seats1 values(58,11);
+insert into available_seats1 values(58,12);
+insert into available_seats1 values(58,13);
+insert into available_seats1 values(58,14);
+insert into available_seats1 values(58,15);
+insert into available_seats1 values(58,16);
+insert into available_seats1 values(58,17);
+insert into available_seats1 values(58,18);
+insert into available_seats1 values(58,19);
+insert into available_seats1 values(58,20);
+insert into available_seats1 values(58,21);
+
+insert into available_seats1 values(59,1);
+insert into available_seats1 values(59,2);
+insert into available_seats1 values(59,3);
+insert into available_seats1 values(59,4);
+insert into available_seats1 values(59,5);
+insert into available_seats1 values(59,6);
+insert into available_seats1 values(59,7);
+insert into available_seats1 values(59,8);
+insert into available_seats1 values(59,9);
+insert into available_seats1 values(59,10);
+insert into available_seats1 values(59,11);
+insert into available_seats1 values(59,12);
+insert into available_seats1 values(59,13);
+insert into available_seats1 values(59,14);
+insert into available_seats1 values(59,15);
+insert into available_seats1 values(59,16);
+insert into available_seats1 values(59,17);
+insert into available_seats1 values(59,18);
+insert into available_seats1 values(59,19);
+insert into available_seats1 values(59,20);
+insert into available_seats1 values(59,21);
+
+insert into available_seats1 values(60,1);
+insert into available_seats1 values(60,2);
+insert into available_seats1 values(60,3);
+insert into available_seats1 values(60,4);
+insert into available_seats1 values(60,5);
+insert into available_seats1 values(60,6);
+insert into available_seats1 values(60,7);
+insert into available_seats1 values(60,8);
+insert into available_seats1 values(60,9);
+insert into available_seats1 values(60,10);
+insert into available_seats1 values(60,11);
+insert into available_seats1 values(60,12);
+insert into available_seats1 values(60,13);
+insert into available_seats1 values(60,14);
+insert into available_seats1 values(60,15);
+insert into available_seats1 values(60,16);
+insert into available_seats1 values(60,17);
+insert into available_seats1 values(60,18);
+insert into available_seats1 values(60,19);
+insert into available_seats1 values(60,20);
+insert into available_seats1 values(60,21);
+
+insert into available_seats1 values(61,1);
+insert into available_seats1 values(61,2);
+insert into available_seats1 values(61,3);
+insert into available_seats1 values(61,4);
+insert into available_seats1 values(61,5);
+insert into available_seats1 values(61,6);
+insert into available_seats1 values(61,7);
+insert into available_seats1 values(61,8);
+insert into available_seats1 values(61,9);
+insert into available_seats1 values(61,10);
+insert into available_seats1 values(61,11);
+insert into available_seats1 values(61,12);
+insert into available_seats1 values(61,13);
+insert into available_seats1 values(61,14);
+insert into available_seats1 values(61,15);
+insert into available_seats1 values(61,16);
+insert into available_seats1 values(61,17);
+insert into available_seats1 values(61,18);
+insert into available_seats1 values(61,19);
+insert into available_seats1 values(61,20);
+insert into available_seats1 values(61,21);
+
+insert into available_seats1 values(62,1);
+insert into available_seats1 values(62,2);
+insert into available_seats1 values(62,3);
+insert into available_seats1 values(62,4);
+insert into available_seats1 values(62,5);
+insert into available_seats1 values(62,6);
+insert into available_seats1 values(62,7);
+insert into available_seats1 values(62,8);
+insert into available_seats1 values(62,9);
+insert into available_seats1 values(62,10);
+insert into available_seats1 values(62,11);
+insert into available_seats1 values(62,12);
+insert into available_seats1 values(62,13);
+insert into available_seats1 values(62,14);
+insert into available_seats1 values(62,15);
+insert into available_seats1 values(62,16);
+insert into available_seats1 values(62,17);
+insert into available_seats1 values(62,18);
+insert into available_seats1 values(62,19);
+insert into available_seats1 values(62,20);
+insert into available_seats1 values(62,21);
+
+
+insert into available_seats1 values(63,1);
+insert into available_seats1 values(63,2);
+insert into available_seats1 values(63,3);
+insert into available_seats1 values(63,4);
+insert into available_seats1 values(63,5);
+insert into available_seats1 values(63,6);
+insert into available_seats1 values(63,7);
+insert into available_seats1 values(63,8);
+insert into available_seats1 values(63,9);
+insert into available_seats1 values(63,10);
+insert into available_seats1 values(63,11);
+insert into available_seats1 values(63,12);
+insert into available_seats1 values(63,13);
+insert into available_seats1 values(63,14);
+insert into available_seats1 values(63,15);
+insert into available_seats1 values(63,16);
+insert into available_seats1 values(63,17);
+insert into available_seats1 values(63,18);
+insert into available_seats1 values(63,19);
+insert into available_seats1 values(63,20);
+insert into available_seats1 values(63,21);
+
+insert into available_seats1 values(64,1);
+insert into available_seats1 values(64,2);
+insert into available_seats1 values(64,3);
+insert into available_seats1 values(64,4);
+insert into available_seats1 values(64,5);
+insert into available_seats1 values(64,6);
+insert into available_seats1 values(64,7);
+insert into available_seats1 values(64,8);
+insert into available_seats1 values(64,9);
+insert into available_seats1 values(64,10);
+insert into available_seats1 values(64,11);
+insert into available_seats1 values(64,12);
+insert into available_seats1 values(64,13);
+insert into available_seats1 values(64,14);
+insert into available_seats1 values(64,15);
+insert into available_seats1 values(64,16);
+insert into available_seats1 values(64,17);
+insert into available_seats1 values(64,18);
+insert into available_seats1 values(64,19);
+insert into available_seats1 values(64,20);
+insert into available_seats1 values(64,21);
+
+insert into available_seats1 values(65,1);
+insert into available_seats1 values(65,2);
+insert into available_seats1 values(65,3);
+insert into available_seats1 values(65,4);
+insert into available_seats1 values(65,5);
+insert into available_seats1 values(65,6);
+insert into available_seats1 values(65,7);
+insert into available_seats1 values(65,8);
+insert into available_seats1 values(65,9);
+insert into available_seats1 values(65,10);
+insert into available_seats1 values(65,11);
+insert into available_seats1 values(65,12);
+insert into available_seats1 values(65,13);
+insert into available_seats1 values(65,14);
+insert into available_seats1 values(65,15);
+insert into available_seats1 values(65,16);
+insert into available_seats1 values(65,17);
+insert into available_seats1 values(65,18);
+insert into available_seats1 values(65,19);
+insert into available_seats1 values(65,20);
+insert into available_seats1 values(65,21);
+
+insert into available_seats1 values(66,1);
+insert into available_seats1 values(66,2);
+insert into available_seats1 values(66,3);
+insert into available_seats1 values(66,4);
+insert into available_seats1 values(66,5);
+insert into available_seats1 values(66,6);
+insert into available_seats1 values(66,7);
+insert into available_seats1 values(66,8);
+insert into available_seats1 values(66,9);
+insert into available_seats1 values(66,10);
+insert into available_seats1 values(66,11);
+insert into available_seats1 values(66,12);
+insert into available_seats1 values(66,13);
+insert into available_seats1 values(66,14);
+insert into available_seats1 values(66,15);
+insert into available_seats1 values(66,16);
+insert into available_seats1 values(66,17);
+insert into available_seats1 values(66,18);
+insert into available_seats1 values(66,19);
+insert into available_seats1 values(66,20);
+insert into available_seats1 values(66,21);
+
+insert into available_seats1 values(67,1);
+insert into available_seats1 values(67,2);
+insert into available_seats1 values(67,3);
+insert into available_seats1 values(67,4);
+insert into available_seats1 values(67,5);
+insert into available_seats1 values(67,6);
+insert into available_seats1 values(67,7);
+insert into available_seats1 values(67,8);
+insert into available_seats1 values(67,9);
+insert into available_seats1 values(67,10);
+insert into available_seats1 values(67,11);
+insert into available_seats1 values(67,12);
+insert into available_seats1 values(67,13);
+insert into available_seats1 values(67,14);
+insert into available_seats1 values(67,15);
+insert into available_seats1 values(67,16);
+insert into available_seats1 values(67,17);
+insert into available_seats1 values(67,18);
+insert into available_seats1 values(67,19);
+insert into available_seats1 values(67,20);
+insert into available_seats1 values(67,21);
+
+insert into available_seats1 values(68,1);
+insert into available_seats1 values(68,2);
+insert into available_seats1 values(68,3);
+insert into available_seats1 values(68,4);
+insert into available_seats1 values(68,5);
+insert into available_seats1 values(68,6);
+insert into available_seats1 values(68,7);
+insert into available_seats1 values(68,8);
+insert into available_seats1 values(68,9);
+insert into available_seats1 values(68,10);
+insert into available_seats1 values(68,11);
+insert into available_seats1 values(68,12);
+insert into available_seats1 values(68,13);
+insert into available_seats1 values(68,14);
+insert into available_seats1 values(68,15);
+insert into available_seats1 values(68,16);
+insert into available_seats1 values(68,17);
+insert into available_seats1 values(68,18);
+insert into available_seats1 values(68,19);
+insert into available_seats1 values(68,20);
+insert into available_seats1 values(68,21);
+
+insert into available_seats1 values(69,1);
+insert into available_seats1 values(69,2);
+insert into available_seats1 values(69,3);
+insert into available_seats1 values(69,4);
+insert into available_seats1 values(69,5);
+insert into available_seats1 values(69,6);
+insert into available_seats1 values(69,7);
+insert into available_seats1 values(69,8);
+insert into available_seats1 values(69,9);
+insert into available_seats1 values(69,10);
+insert into available_seats1 values(69,11);
+insert into available_seats1 values(69,12);
+insert into available_seats1 values(69,13);
+insert into available_seats1 values(69,14);
+insert into available_seats1 values(69,15);
+insert into available_seats1 values(69,16);
+insert into available_seats1 values(69,17);
+insert into available_seats1 values(69,18);
+insert into available_seats1 values(69,19);
+insert into available_seats1 values(69,20);
+insert into available_seats1 values(69,21);
+
+insert into available_seats1 values(70,1);
+insert into available_seats1 values(70,2);
+insert into available_seats1 values(70,3);
+insert into available_seats1 values(70,4);
+insert into available_seats1 values(70,5);
+insert into available_seats1 values(70,6);
+insert into available_seats1 values(70,7);
+insert into available_seats1 values(70,8);
+insert into available_seats1 values(70,9);
+insert into available_seats1 values(70,10);
+insert into available_seats1 values(70,11);
+insert into available_seats1 values(70,12);
+insert into available_seats1 values(70,13);
+insert into available_seats1 values(70,14);
+insert into available_seats1 values(70,15);
+insert into available_seats1 values(70,16);
+insert into available_seats1 values(70,17);
+insert into available_seats1 values(70,18);
+insert into available_seats1 values(70,19);
+insert into available_seats1 values(70,20);
+insert into available_seats1 values(70,21);
+
+insert into available_seats1 values(71,1);
+insert into available_seats1 values(71,2);
+insert into available_seats1 values(71,3);
+insert into available_seats1 values(71,4);
+insert into available_seats1 values(71,5);
+insert into available_seats1 values(71,6);
+insert into available_seats1 values(71,7);
+insert into available_seats1 values(71,8);
+insert into available_seats1 values(71,9);
+insert into available_seats1 values(71,10);
+insert into available_seats1 values(71,11);
+insert into available_seats1 values(71,12);
+insert into available_seats1 values(71,13);
+insert into available_seats1 values(71,14);
+insert into available_seats1 values(71,15);
+insert into available_seats1 values(71,16);
+insert into available_seats1 values(71,17);
+insert into available_seats1 values(71,18);
+insert into available_seats1 values(71,19);
+insert into available_seats1 values(71,20);
+insert into available_seats1 values(71,21);
+
+insert into available_seats1 values(72,1);
+insert into available_seats1 values(72,2);
+insert into available_seats1 values(72,3);
+insert into available_seats1 values(72,4);
+insert into available_seats1 values(72,5);
+insert into available_seats1 values(72,6);
+insert into available_seats1 values(72,7);
+insert into available_seats1 values(72,8);
+insert into available_seats1 values(72,9);
+insert into available_seats1 values(72,10);
+insert into available_seats1 values(72,11);
+insert into available_seats1 values(72,12);
+insert into available_seats1 values(72,13);
+insert into available_seats1 values(72,14);
+insert into available_seats1 values(72,15);
+insert into available_seats1 values(72,16);
+insert into available_seats1 values(72,17);
+insert into available_seats1 values(72,18);
+insert into available_seats1 values(72,19);
+insert into available_seats1 values(72,20);
+insert into available_seats1 values(72,21);
+
+insert into available_seats1 values(73,1);
+insert into available_seats1 values(73,2);
+insert into available_seats1 values(73,3);
+insert into available_seats1 values(73,4);
+insert into available_seats1 values(73,5);
+insert into available_seats1 values(73,6);
+insert into available_seats1 values(73,7);
+insert into available_seats1 values(73,8);
+insert into available_seats1 values(73,9);
+insert into available_seats1 values(73,10);
+insert into available_seats1 values(73,11);
+insert into available_seats1 values(73,12);
+insert into available_seats1 values(73,13);
+insert into available_seats1 values(73,14);
+insert into available_seats1 values(73,15);
+insert into available_seats1 values(73,16);
+insert into available_seats1 values(73,17);
+insert into available_seats1 values(73,18);
+insert into available_seats1 values(73,19);
+insert into available_seats1 values(73,20);
+insert into available_seats1 values(73,21);
+
+insert into available_seats1 values(74,1);
+insert into available_seats1 values(74,2);
+insert into available_seats1 values(74,3);
+insert into available_seats1 values(74,4);
+insert into available_seats1 values(74,5);
+insert into available_seats1 values(74,6);
+insert into available_seats1 values(74,7);
+insert into available_seats1 values(74,8);
+insert into available_seats1 values(74,9);
+insert into available_seats1 values(74,10);
+insert into available_seats1 values(74,11);
+insert into available_seats1 values(74,12);
+insert into available_seats1 values(74,13);
+insert into available_seats1 values(74,14);
+insert into available_seats1 values(74,15);
+insert into available_seats1 values(74,16);
+insert into available_seats1 values(74,17);
+insert into available_seats1 values(74,18);
+insert into available_seats1 values(74,19);
+insert into available_seats1 values(74,20);
+insert into available_seats1 values(74,21);
+
+insert into available_seats1 values(75,1);
+insert into available_seats1 values(75,2);
+insert into available_seats1 values(75,3);
+insert into available_seats1 values(75,4);
+insert into available_seats1 values(75,5);
+insert into available_seats1 values(75,6);
+insert into available_seats1 values(75,7);
+insert into available_seats1 values(75,8);
+insert into available_seats1 values(75,9);
+insert into available_seats1 values(75,10);
+insert into available_seats1 values(75,11);
+insert into available_seats1 values(75,12);
+insert into available_seats1 values(75,13);
+insert into available_seats1 values(75,14);
+insert into available_seats1 values(75,15);
+insert into available_seats1 values(75,16);
+insert into available_seats1 values(75,17);
+insert into available_seats1 values(75,18);
+insert into available_seats1 values(75,19);
+insert into available_seats1 values(75,20);
+insert into available_seats1 values(75,21);
+
+insert into available_seats1 values(76,1);
+insert into available_seats1 values(76,2);
+insert into available_seats1 values(76,3);
+insert into available_seats1 values(76,4);
+insert into available_seats1 values(76,5);
+insert into available_seats1 values(76,6);
+insert into available_seats1 values(76,7);
+insert into available_seats1 values(76,8);
+insert into available_seats1 values(76,9);
+insert into available_seats1 values(76,10);
+insert into available_seats1 values(76,11);
+insert into available_seats1 values(76,12);
+insert into available_seats1 values(76,13);
+insert into available_seats1 values(76,14);
+insert into available_seats1 values(76,15);
+insert into available_seats1 values(76,16);
+insert into available_seats1 values(76,17);
+insert into available_seats1 values(76,18);
+insert into available_seats1 values(76,19);
+insert into available_seats1 values(76,20);
+insert into available_seats1 values(76,21);
+
+insert into available_seats1 values(77,1);
+insert into available_seats1 values(77,2);
+insert into available_seats1 values(77,3);
+insert into available_seats1 values(77,4);
+insert into available_seats1 values(77,5);
+insert into available_seats1 values(77,6);
+insert into available_seats1 values(77,7);
+insert into available_seats1 values(77,8);
+insert into available_seats1 values(77,9);
+insert into available_seats1 values(77,10);
+insert into available_seats1 values(77,11);
+insert into available_seats1 values(77,12);
+insert into available_seats1 values(77,13);
+insert into available_seats1 values(77,14);
+insert into available_seats1 values(77,15);
+insert into available_seats1 values(77,16);
+insert into available_seats1 values(77,17);
+insert into available_seats1 values(77,18);
+insert into available_seats1 values(77,19);
+insert into available_seats1 values(77,20);
+insert into available_seats1 values(77,21);
+
+insert into available_seats1 values(78,1);
+insert into available_seats1 values(78,2);
+insert into available_seats1 values(78,3);
+insert into available_seats1 values(78,4);
+insert into available_seats1 values(78,5);
+insert into available_seats1 values(78,6);
+insert into available_seats1 values(78,7);
+insert into available_seats1 values(78,8);
+insert into available_seats1 values(78,9);
+insert into available_seats1 values(78,10);
+insert into available_seats1 values(78,11);
+insert into available_seats1 values(78,12);
+insert into available_seats1 values(78,13);
+insert into available_seats1 values(78,14);
+insert into available_seats1 values(78,15);
+insert into available_seats1 values(78,16);
+insert into available_seats1 values(78,17);
+insert into available_seats1 values(78,18);
+insert into available_seats1 values(78,19);
+insert into available_seats1 values(78,20);
+insert into available_seats1 values(78,21);
+
+insert into available_seats1 values(79,1);
+insert into available_seats1 values(79,2);
+insert into available_seats1 values(79,3);
+insert into available_seats1 values(79,4);
+insert into available_seats1 values(79,5);
+insert into available_seats1 values(79,6);
+insert into available_seats1 values(79,7);
+insert into available_seats1 values(79,8);
+insert into available_seats1 values(79,9);
+insert into available_seats1 values(79,10);
+insert into available_seats1 values(79,11);
+insert into available_seats1 values(79,12);
+insert into available_seats1 values(79,13);
+insert into available_seats1 values(79,14);
+insert into available_seats1 values(79,15);
+insert into available_seats1 values(79,16);
+insert into available_seats1 values(79,17);
+insert into available_seats1 values(79,18);
+insert into available_seats1 values(79,19);
+insert into available_seats1 values(79,20);
+insert into available_seats1 values(79,21);
+
+insert into available_seats1 values(80,1);
+insert into available_seats1 values(80,2);
+insert into available_seats1 values(80,3);
+insert into available_seats1 values(80,4);
+insert into available_seats1 values(80,5);
+insert into available_seats1 values(80,6);
+insert into available_seats1 values(80,7);
+insert into available_seats1 values(80,8);
+insert into available_seats1 values(80,9);
+insert into available_seats1 values(80,10);
+insert into available_seats1 values(80,11);
+insert into available_seats1 values(80,12);
+insert into available_seats1 values(80,13);
+insert into available_seats1 values(80,14);
+insert into available_seats1 values(80,15);
+insert into available_seats1 values(80,16);
+insert into available_seats1 values(80,17);
+insert into available_seats1 values(80,18);
+insert into available_seats1 values(80,19);
+insert into available_seats1 values(80,20);
+insert into available_seats1 values(80,21);
+
+insert into available_seats1 values(81,1);
+insert into available_seats1 values(81,2);
+insert into available_seats1 values(81,3);
+insert into available_seats1 values(81,4);
+insert into available_seats1 values(81,5);
+insert into available_seats1 values(81,6);
+insert into available_seats1 values(81,7);
+insert into available_seats1 values(81,8);
+insert into available_seats1 values(81,9);
+insert into available_seats1 values(81,10);
+insert into available_seats1 values(81,11);
+insert into available_seats1 values(81,12);
+insert into available_seats1 values(81,13);
+insert into available_seats1 values(81,14);
+insert into available_seats1 values(81,15);
+insert into available_seats1 values(81,16);
+insert into available_seats1 values(81,17);
+insert into available_seats1 values(81,18);
+insert into available_seats1 values(81,19);
+insert into available_seats1 values(81,20);
+insert into available_seats1 values(81,21);
+
+insert into available_seats1 values(82,1);
+insert into available_seats1 values(82,2);
+insert into available_seats1 values(82,3);
+insert into available_seats1 values(82,4);
+insert into available_seats1 values(82,5);
+insert into available_seats1 values(82,6);
+insert into available_seats1 values(82,7);
+insert into available_seats1 values(82,8);
+insert into available_seats1 values(82,9);
+insert into available_seats1 values(82,10);
+insert into available_seats1 values(82,11);
+insert into available_seats1 values(82,12);
+insert into available_seats1 values(82,13);
+insert into available_seats1 values(82,14);
+insert into available_seats1 values(82,15);
+insert into available_seats1 values(82,16);
+insert into available_seats1 values(82,17);
+insert into available_seats1 values(82,18);
+insert into available_seats1 values(82,19);
+insert into available_seats1 values(82,20);
+insert into available_seats1 values(82,21);
+
+insert into available_seats1 values(83,1);
+insert into available_seats1 values(83,2);
+insert into available_seats1 values(83,3);
+insert into available_seats1 values(83,4);
+insert into available_seats1 values(83,5);
+insert into available_seats1 values(83,6);
+insert into available_seats1 values(83,7);
+insert into available_seats1 values(83,8);
+insert into available_seats1 values(83,9);
+insert into available_seats1 values(83,10);
+insert into available_seats1 values(83,11);
+insert into available_seats1 values(83,12);
+insert into available_seats1 values(83,13);
+insert into available_seats1 values(83,14);
+insert into available_seats1 values(83,15);
+insert into available_seats1 values(83,16);
+insert into available_seats1 values(83,17);
+insert into available_seats1 values(83,18);
+insert into available_seats1 values(83,19);
+insert into available_seats1 values(83,20);
+insert into available_seats1 values(83,21);
+
+insert into available_seats1 values(84,1);
+insert into available_seats1 values(84,2);
+insert into available_seats1 values(84,3);
+insert into available_seats1 values(84,4);
+insert into available_seats1 values(84,5);
+insert into available_seats1 values(84,6);
+insert into available_seats1 values(84,7);
+insert into available_seats1 values(84,8);
+insert into available_seats1 values(84,9);
+insert into available_seats1 values(84,10);
+insert into available_seats1 values(84,11);
+insert into available_seats1 values(84,12);
+insert into available_seats1 values(84,13);
+insert into available_seats1 values(84,14);
+insert into available_seats1 values(84,15);
+insert into available_seats1 values(84,16);
+insert into available_seats1 values(84,17);
+insert into available_seats1 values(84,18);
+insert into available_seats1 values(84,19);
+insert into available_seats1 values(84,20);
+insert into available_seats1 values(84,21);
+
+
+insert into available_seats1 values(85,1);
+insert into available_seats1 values(85,2);
+insert into available_seats1 values(85,3);
+insert into available_seats1 values(85,4);
+insert into available_seats1 values(85,5);
+insert into available_seats1 values(85,6);
+insert into available_seats1 values(85,7);
+insert into available_seats1 values(85,8);
+insert into available_seats1 values(85,9);
+insert into available_seats1 values(85,10);
+insert into available_seats1 values(85,11);
+insert into available_seats1 values(85,12);
+insert into available_seats1 values(85,13);
+insert into available_seats1 values(85,14);
+insert into available_seats1 values(85,15);
+insert into available_seats1 values(85,16);
+insert into available_seats1 values(85,17);
+insert into available_seats1 values(85,18);
+insert into available_seats1 values(85,19);
+insert into available_seats1 values(85,20);
+insert into available_seats1 values(85,21);
+
+insert into available_seats1 values(86,1);
+insert into available_seats1 values(86,2);
+insert into available_seats1 values(86,3);
+insert into available_seats1 values(86,4);
+insert into available_seats1 values(86,5);
+insert into available_seats1 values(86,6);
+insert into available_seats1 values(86,7);
+insert into available_seats1 values(86,8);
+insert into available_seats1 values(86,9);
+insert into available_seats1 values(86,10);
+insert into available_seats1 values(86,11);
+insert into available_seats1 values(86,12);
+insert into available_seats1 values(86,13);
+insert into available_seats1 values(86,14);
+insert into available_seats1 values(86,15);
+insert into available_seats1 values(86,16);
+insert into available_seats1 values(86,17);
+insert into available_seats1 values(86,18);
+insert into available_seats1 values(86,19);
+insert into available_seats1 values(86,20);
+insert into available_seats1 values(86,21);
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
